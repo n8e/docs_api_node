@@ -1,6 +1,9 @@
 var docMan = require('../server/routes/api'),
-  request = require('superagent'),
+  express = require('express'),
   faker = require('faker');
+
+var app = express();
+var request = require('supertest')(app);
 
 var user = {
     firstname: faker.name.firstName(),
