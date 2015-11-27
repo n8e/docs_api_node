@@ -1,17 +1,13 @@
 var docMan = require('../server/routes/api'),
-  express = require('express'),
+  request = require('superagent'),
   faker = require('faker');
-
-var app = express();
-var request = require('superagent')(app);
 
 var user = {
     firstname: faker.name.firstName(),
     lastname: faker.name.lastName(),
     password: '12345',
     email: faker.internet.email(),
-    username: faker.internet.userName(),
-    role: 'User'
+    username: faker.internet.userName()
   },
   authToken, userId;
 
@@ -20,8 +16,7 @@ var sameUser = {
   lastname: user.lastname,
   password: user.password,
   email: user.email,
-  username: user.username,
-  role: user.role
+  username: user.username
 };
 
 
