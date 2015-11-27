@@ -17,11 +17,11 @@ var DocumentSchema = new Schema({
   },
   dateCreated: {
     type: Date,
-    default: Date.now().toUTCString()
+    default: Date.now()
   },
   lastModified: {
     type: Date,
-    default: Date.now().toUTCString()
+    default: Date.now()
   }
 });
 
