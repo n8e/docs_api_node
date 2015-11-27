@@ -8,7 +8,6 @@ var app = express();
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-require('./app/cli/index');
 
 // connect to Mongo when the app initializes
 mongoose.connect(config.database, function(err) {
