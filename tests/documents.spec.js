@@ -6,7 +6,7 @@ var url = 'http://localhost:3000',
   },
   authToken,
   userId,
-  document = {
+  document1 = {
     title: 'Area of Triangle',
     content: 'This is obtained from the base and height. Get half of' + 
     ' the base and multiply by the height to get the area.'
@@ -68,7 +68,7 @@ describe('Document', function() {
     request
       .post(url + '/api/documents')
       .set('x-access-token', authToken)
-      .send(document)
+      .send(document1)
       .end(function(err, res) {
         if (err) {
           return err;
@@ -102,8 +102,8 @@ describe('Document', function() {
         expect(res.body.length).toBeDefined();
         expect(res.body.length).not.toBeNull();
         expect(res.body.length > 0).toBeTruthy();
-        expect(res.body[res.body.length - 1].title).toEqual(document.title);
-        expect(res.body[res.body.length - 1].content).toEqual(document.content);
+        expect(res.body[res.body.length - 1].title).toEqual(document1.title);
+        expect(res.body[res.body.length - 1].content).toEqual(document1.content);
         done();
       });
   });
