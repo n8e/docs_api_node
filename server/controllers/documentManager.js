@@ -45,7 +45,7 @@
 
   module.exports = {
     // to add a user to the db
-    createUser: function(req, res, next) {
+    createUser: function(req, res) {
       var user = new User({
         name: {
           first: req.body.firstname,
@@ -89,7 +89,7 @@
     },
 
     // to login user into docms system
-    login: function(req, res, next) {
+    login: function(req, res) {
       User.findOne({
         username: req.body.username
       }).select('name username password').exec(function(err, user) {
@@ -137,7 +137,7 @@
       });
     },
     //creates a role in the db
-    createRole: function(req, res, next) {
+    createRole: function(req, res) {
       var role = new Role({
         id: req.body.id,
         title: req.body.title
@@ -155,7 +155,7 @@
     },
 
     // to get the mongo cluster of all the users stored on the db
-    getAllUsers: function(req, res, next) {
+    getAllUsers: function(req, res) {
       User.find({}, function(err, users) {
         if (err) {
           res.send(err);
@@ -355,7 +355,7 @@
 
 
     // to get the mongo cluster of all the documents filtered by 'User' role
-    getAllDocumentsByRoleUser: function(req, res, next) {
+    getAllDocumentsByRoleUser: function(req, res) {
       Document.find({
           role: User
         })
@@ -383,7 +383,7 @@
 
 
     // to get the mongo cluster of all the documents filtered by 'Administrator' role
-    getAllDocumentsByRoleAdministrator: function(req, res, next) {
+    getAllDocumentsByRoleAdministrator: function(req, res) {
       Document.find({})
         .populate('ownerId')
         .exec(function(err, documents) {
@@ -408,7 +408,7 @@
     },
 
     // to get the mongo cluster of all the documents filtered by date
-    getAllDocumentsByDate: function(req, res, next) {
+    getAllDocumentsByDate: function(req, res) {
       Document.find({})
         .sort('dateCreated')
         .exec(function(err, documents) {
