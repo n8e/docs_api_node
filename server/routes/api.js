@@ -8,6 +8,10 @@ module.exports = function(app, express) {
 
   api.get('/users', docManager.getAllUsers);
 
+  api.get('/users/roles', docManager.getRoles);
+
+  api.post('/users/roles', docManager.createRole);
+
   api.post('/users/login', docManager.login);
 
   // middleware

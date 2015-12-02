@@ -1,32 +1,30 @@
-var docMan = require('../server/routes/api'),
-  express = require('express'),
-  faker = require('faker');
-
-var app = express();
-var request = require('supertest')(app);
+var url = 'http://localhost:3000',
+  request = require('superagent');
 
 var user = {
-    firstname: faker.name.firstName(),
-    lastname: faker.name.lastName(),
+    firstname: 'Sadiq',
+    lastname: 'Malika',
     password: '12345',
-    email: faker.internet.email(),
-    username: faker.internet.userName()
+    email: 'smalik@gmail.com',
+    username: 'smalik',
+    role: 2
   },
   authToken, userId;
 
 var sameUser = {
-  firstname: user.firstname,
-  lastname: user.lastname,
-  password: user.password,
-  email: user.email,
-  username: user.username
+  firstname: 'Sadiq',
+  lastname: 'Malika',
+  password: '12345',
+  email: 'smalik@gmail.com',
+  username: 'smalik',
+  role: 2
 };
 
 
 describe('Users', function() {
   it('should show that a new user is created (POST /api/users)', function(done) {
     request
-      .post('/api/users')
+      .post(url + '/api/users')
       .send(user)
       .end(function(err, res) {
         if (err) {
@@ -47,7 +45,7 @@ describe('Users', function() {
   });
   it('validates that the new user created is unique (POST /api/users)', function(done) {
     request
-      .post('/api/users')
+      .post(url + '/api/users')
       .send(sameUser)
       .end(function(err, res) {
         if (err) {
@@ -57,7 +55,8 @@ describe('Users', function() {
           expect('Content-Type', 'json', done);
           expect(typeof res.body).toBe('object');
           expect({
-            code: 11000
+            code: 11000,
+            index: 0
           }, done);
           done();
         }
@@ -65,7 +64,7 @@ describe('Users', function() {
   });
   it('validates that all users are returned when getAllUsers function in the controller is called (GET /api/users)', function(done) {
     request
-      .get('/api/users')
+      .get(url + '/api/users')
       .set('Accept', 'application/json')
       .end(function(err, res) {
         if (err) {
@@ -73,7 +72,11 @@ describe('Users', function() {
         } else {
           expect(200, done);
           expect('Content-Type', 'json', done);
-          expect('res.body[res.body.length - 1].username', user.username, done);
+          expect(res.body.length).toBeDefined();
+          expect(res.body.length).not.toBeNull();
+          expect(res.body.length > 0).toBeTruthy();
+          expect(res.body[res.body.length - 1].username).toEqual(user.username);
+          expect(res.body[res.body.length - 1].email).toEqual(user.email);
           expect(typeof res.body).toBe('object');
           done();
         }
@@ -81,16 +84,16 @@ describe('Users', function() {
   });
   it('validates that the new user created has a defined role, has a first name and a last name', function(done) {
     request
-      .get('/api/users')
+      .get(url + '/api/users')
       .end(function(err, res) {
-        // var response = JSON.parse(res);
         if (err) {
           return err;
         } else {
           expect(200, done);
           expect('Content-Type', 'json', done);
-          // expect(JSON.parse(res).length, 4, done);
-          // expect(typeof res.body[res.body.length - 1]).toBe('object');
+          expect(res.body[res.body.length - 1].role).toEqual('User');
+          expect(res.body[res.body.length - 1].name.first).toEqual(user.firstname);
+          expect(res.body[res.body.length - 1].name.last).toEqual(user.lastname);
           done();
         }
       });

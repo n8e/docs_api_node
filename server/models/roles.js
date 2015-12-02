@@ -1,19 +1,20 @@
 // require needed modules
 var mongoose = require('mongoose'),
-  User = require('./users'),
-  Document = require('./documents'),
   Schema = mongoose.Schema;
 
 // create a schema
 var RolesSchema = new Schema({
   id: {
-    type: Schema.Types.ObjectId,
-    ref: 'User'
+    type: Number,
+    unique:true
   },
   title: {
-    type: Schema.Types.ObjectId,
-    ref: 'Document'
+    type: String,
+    enum: ['Administrator', 'User', 'Standard'],
+    default: 'Standard',
+    unique: true
   }
+
 });
 
 // make the model available to our users in our Node applications
