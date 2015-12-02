@@ -16,9 +16,31 @@
       name: user.name,
       username: user.username
     }, secretKey, {
-      expiresInMinute: 1440
+      expiresIn: 1440
     });
     return token;
+  }
+
+  //seed two roles User and Administrator in table
+  function seedingRoles() {
+    var roleAdmin = new Role({
+      id: 1,
+      title: 'Administrator'
+    });
+    roleAdmin.save(function(err) {
+      if (err) {
+        return err;
+      }
+    });
+    var roleUser = new Role({
+      id: 2,
+      title: 'User'
+    });
+    roleUser.save(function(err) {
+      if (err) {
+        return err;
+      }
+    });
   }
 
   module.exports = {
@@ -33,17 +55,35 @@
         username: req.body.username,
         password: req.body.password
       });
+
+      // assign a token to the created user
       var token = createToken(user);
-      user.save(function(err) {
+
+      // seed the administrator and user roles
+      seedingRoles();
+
+      // find a role based on the input on the body
+      Role.find({
+        id: req.body.role
+      }, function(err, roles) {
         if (err) {
           res.send(err);
-          return;
         }
-
-        res.json({
-          success: true,
-          message: 'User has been created!',
-          token: token
+        //
+        // add the role to the user before being saved
+        //
+        user.role = roles[0].title;
+        // save the user object
+        user.save(function(err) {
+          if (err) {
+            res.send(err);
+            return;
+          }
+          res.json({
+            success: true,
+            message: 'User has been created!',
+            token: token
+          });
         });
       });
     },
@@ -86,11 +126,37 @@
         "message": "User has been successfully logged out"
       });
     },
-
+    // gets all the saved roles from the db
+    getRoles: function(req, res) {
+      Role.find({}, function(err, roles) {
+        if (err) {
+          res.send(err);
+          return;
+        }
+        res.json(roles);
+      });
+    },
+    //creates a role in the db
+    createRole: function(req, res, next) {
+      var role = new Role({
+        id: req.body.id,
+        title: req.body.title
+      });
+      role.save(function(err) {
+        if (err) {
+          res.send(err);
+          return;
+        }
+        res.json({
+          success: true,
+          message: 'Role has been created!'
+        });
+      });
+    },
 
     // to get the mongo cluster of all the users stored on the db
     getAllUsers: function(req, res, next) {
-      User.find({}, 'username', function(err, users) {
+      User.find({}, function(err, users) {
         if (err) {
           res.send(err);
           return;
