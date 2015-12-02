@@ -13,7 +13,8 @@
   "noempty": true,
   "nonew": true,
   "predef": [
-    "require"
+    "require",
+    "console"
   ],
   "quotmark": true,
   "trailing": true,

@@ -1,8 +1,7 @@
 // require the modules for database and password
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
-  bcrypt = require('bcrypt-nodejs'),
-  Role = require('./roles');
+  bcrypt = require('bcrypt-nodejs');
 
 // create a schema
 var UserSchema = new Schema({

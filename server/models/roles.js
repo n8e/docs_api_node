@@ -1,7 +1,6 @@
 // require needed modules
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-  User = require('./users');
+  Schema = mongoose.Schema;
 
 // create a schema
 var RolesSchema = new Schema({

@@ -8,7 +8,8 @@ var url = 'http://localhost:3000',
   userId,
   document = {
     title: 'Area of Triangle',
-    content: 'This is obtained from the base and height. Get half of the base and multiply by the height to get the area.'
+    content: 'This is obtained from the base and height. Get half of' + 
+    ' the base and multiply by the height to get the area.'
   };
 
 function login(done) {
@@ -17,12 +18,12 @@ function login(done) {
     .send(user)
     .end(function(err, res) {
       if (!err) {
-        console.log("You have successfully logged in.");
+        console.log('You have successfully logged in.');
         userId = res.body.id;
         authToken = res.body.token;
         done();
       } else {
-        console.log("There was a problem logging you in.\n" + '\n' + res.body.message);
+        console.log('There was a problem logging you in.\n' + '\n' + res.body.message);
         done();
       }
     });
@@ -35,10 +36,10 @@ function logout(done) {
     .end(function(err, res) {
       if (!err) {
         authToken = '';
-        console.log("You have logged out of docms.");
+        console.log('You have logged out of docms.');
         done();
       } else {
-        console.log("Error" + res.body.message);
+        console.log('Error' + res.body.message);
         done();
       }
     });
@@ -54,7 +55,7 @@ describe('Document', function() {
         expect(typeof res.body).toBe('object');
         expect(res.body.success).toEqual(false);
         expect({
-          message: "No token provided!"
+          message: 'No token provided!'
         }, done);
         done();
       });
@@ -106,11 +107,13 @@ describe('Document', function() {
         done();
       });
   });
-  it("validates that all documents, limited by a specified number and ordered by published date, that can be accessed by a specified role, are returned when getAllDocumentsByRole is called", function() {
+  it('validates that all documents, limited by a specified number and ordered by published date, ' + 
+    'that can be accessed by a specified role, are returned when getAllDocumentsByRole is called', function() {
     expect(true).toBe(true);
   });
 
-  it("validates that all documents, limited by a specified number, that were published on a certain date, are returned when getAllDocumentsByDate is called", function() {
+  it('validates that all documents, limited by a specified number, that were' + 
+    ' published on a certain date, are returned when getAllDocumentsByDate is called', function() {
     expect(true).toBe(true);
   });
 });
