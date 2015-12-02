@@ -29,21 +29,21 @@ function login(done) {
     });
 }
 
-function logout(done) {
-  request
-    .get('http://localhost:3000/api/users/logout')
-    .set('x-access-token', authToken)
-    .end(function(err, res) {
-      if (!err) {
-        authToken = '';
-        console.log('You have logged out of docms.');
-        done();
-      } else {
-        console.log('Error' + res.body.message);
-        done();
-      }
-    });
-}
+// function logout(done) {
+//   request
+//     .get('http://localhost:3000/api/users/logout')
+//     .set('x-access-token', authToken)
+//     .end(function(err, res) {
+//       if (!err) {
+//         authToken = '';
+//         console.log('You have logged out of docms.');
+//         done();
+//       } else {
+//         console.log('Error' + res.body.message);
+//         done();
+//       }
+//     });
+// }
 
 describe('Document', function() {
   it('validates that one has to be authenticated to access documents (GET /api/documents)', function(done) {
