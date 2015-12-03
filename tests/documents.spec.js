@@ -159,7 +159,7 @@ describe('Administrator Documents', function() {
           console.log('There was a problem creating admin.\n' + '\n' + res.body.message);
           done();
         }
-      })
+      });
   });
   beforeEach(function loginAdmin(done) {
     request
@@ -191,7 +191,7 @@ describe('Administrator Documents', function() {
         } else {
           done();
         }
-      })
+      });
   });
 
   it('validates that all documents, limited by a specified number and ordered by published date, ' +

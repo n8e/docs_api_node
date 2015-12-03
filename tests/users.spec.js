@@ -8,8 +8,7 @@ var user = {
     email: 'smalik@gmail.com',
     username: 'smalik',
     role: 2
-  },
-  authToken, userId;
+  };
 
 var sameUser = {
   firstname: 'Sadiq',
@@ -62,7 +61,8 @@ describe('Users', function() {
         }
       });
   });
-  it('validates that all users are returned when getAllUsers function in the controller is called (GET /api/users)', function(done) {
+  it('validates that all users are returned when getAllUsers ' + 
+    'function in the controller is called (GET /api/users)', function(done) {
     request
       .get(url + '/api/users')
       .set('Accept', 'application/json')

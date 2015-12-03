@@ -6,7 +6,6 @@
     Document = require('../models/documents'),
     Role = require('../models/roles'),
     jsonwebtoken = require('jsonwebtoken'),
-    mongoose = require('mongoose'),
     moment = require('moment'),
     secretKey = config.secretKey;
 
@@ -281,10 +280,10 @@
             res.send(err);
             return;
           } else {
-            // res.send(users);
+            console.log(users);
             res.json({
               success: true,
-              message: "Successfully updated User!"
+              message: 'Successfully updated User!'
             });
           }
         });
@@ -308,10 +307,10 @@
             res.send(err);
             return;
           } else {
-            // res.send(users);
+            console.log(documents);
             res.json({
               success: true,
-              message: "Successfully updated Document!"
+              message: 'Successfully updated Document!'
             });
           }
         });

@@ -1,4 +1,5 @@
 var docManager = require('../controllers/documentManager'),
+  User = require('../models/users'),
   auth = require('../controllers/auth');
 
 module.exports = function(app, express) {
