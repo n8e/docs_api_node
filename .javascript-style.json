@@ -15,7 +15,8 @@
   "predef": [
     "require",
     "console",
-    "res"
+    "res",
+    "process"
   ],
   "quotmark": true,
   "trailing": true,

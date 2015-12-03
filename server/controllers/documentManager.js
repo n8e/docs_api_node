@@ -94,17 +94,19 @@
       User.findOne({
         username: req.body.username
       }).select('name username password').exec(function(err, user) {
-        if (err) throw err;
+        if (err) {
+          throw err;
+        }
 
         if (!user) {
           res.status(500).send({
-            message: "User doesnt exist"
+            message: 'User doesnt exist'
           });
         } else if (user) {
           var validPassword = user.comparePassword(req.body.password);
           if (!validPassword) {
             res.status(500).send({
-              message: "Invalid Password"
+              message: 'Invalid Password'
             });
           } else {
             ///// token
@@ -113,7 +115,7 @@
             res.json({
               id: user._id,
               success: true,
-              message: "Successfully logged in!",
+              message: 'Successfully logged in!',
               token: token
             });
           }
@@ -124,7 +126,7 @@
     logout: function(req, res) {
       delete req.headers['x-access-token'];
       return res.status(200).json({
-        "message": "User has been successfully logged out"
+        'message': 'User has been successfully logged out'
       });
     },
     // gets all the saved roles from the db
@@ -183,7 +185,7 @@
     // to get the mongo cluster of all the user roles
     getAllUsersRoles: function() {
       User.find({
-        "role": "User"
+        'role': 'User'
       }, function(err, users) {
         if (err) {
           res.send(err);
@@ -196,7 +198,7 @@
     // to get the mongo cluster of all the user roles
     getAllAdminRoles: function() {
       User.find({
-        "role": "Administrator"
+        'role': 'Administrator'
       }, function(err, users) {
         if (err) {
           res.send(err);
@@ -376,7 +378,7 @@
               }
             });
           for (var i = 0; i < filtered.length; i++) {
-            if (filtered[i] == null) {
+            if (filtered[i] === null) {
               filtered.splice(i, 1);
             }
           }
@@ -406,7 +408,7 @@
               }
             });
           for (var i = 0; i < filtered.length; i++) {
-            if (filtered[i] == null) {
+            if (filtered[i] === null) {
               filtered.splice(i, 1);
             }
           }
@@ -418,9 +420,9 @@
     getAllDocumentsByDate: function(req, res) {
       Document.find({
           dateCreated: {
-              $gt: moment(new Date('2015-12-02')),
-              $lt: moment(new Date('2015-12-04'))
-            }
+            $gt: moment(new Date('2015-12-02')),
+            $lt: moment(new Date('2015-12-04'))
+          }
         })
         // .limit(4)
         .exec(function(err, documents) {
