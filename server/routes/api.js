@@ -21,6 +21,12 @@ module.exports = function(app, express) {
 
   api.get('/documents', docManager.getAllDocuments);
 
+  api.get('/documents/user', docManager.getAllDocumentsByRoleUser);
+
+  api.get('/documents/admin', docManager.getAllDocumentsByRoleAdministrator);
+
+  api.get('/documents/date', docManager.getAllDocumentsByDate);
+
   api.get('/users/logout', docManager.logout);
 
   api.post('/documents', docManager.createDocument);
