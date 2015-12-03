@@ -378,7 +378,7 @@
               }
             });
           for (var i = 0; i < filtered.length; i++) {
-            if (filtered[i] === null) {
+            if (filtered[i] == null) {
               filtered.splice(i, 1);
             }
           }
@@ -408,7 +408,7 @@
               }
             });
           for (var i = 0; i < filtered.length; i++) {
-            if (filtered[i] === null) {
+            if (filtered[i] == null) {
               filtered.splice(i, 1);
             }
           }
