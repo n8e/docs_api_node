@@ -14,7 +14,8 @@
   "nonew": true,
   "predef": [
     "require",
-    "console"
+    "console",
+    "res"
   ],
   "quotmark": true,
   "trailing": true,
