@@ -75,8 +75,8 @@ describe('Users', function() {
           expect(res.body.length).toBeDefined();
           expect(res.body.length).not.toBeNull();
           expect(res.body.length > 0).toBeTruthy();
-          expect(res.body[res.body.length - 1].username).toEqual(user.username);
-          expect(res.body[res.body.length - 1].email).toEqual(user.email);
+          expect(res.body[res.body.length - 1].username).toEqual('Sonnie');
+          expect(res.body[res.body.length - 1].email).toEqual('sgranger@gmail.com');
           expect(typeof res.body).toBe('object');
           done();
         }
@@ -91,9 +91,9 @@ describe('Users', function() {
         } else {
           expect(200, done);
           expect('Content-Type', 'json', done);
-          expect(res.body[res.body.length - 1].role).toEqual('User');
-          expect(res.body[res.body.length - 1].name.first).toEqual(user.firstname);
-          expect(res.body[res.body.length - 1].name.last).toEqual(user.lastname);
+          expect(res.body[res.body.length - 1].role).toEqual('Administrator');
+          expect(res.body[res.body.length - 1].name.first).toEqual('Sonia');
+          expect(res.body[res.body.length - 1].name.last).toEqual('Granger');
           done();
         }
       });
