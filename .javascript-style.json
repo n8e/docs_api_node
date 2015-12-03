@@ -17,7 +17,7 @@
     "console",
     "res",
     "process",
-    "_dirname"
+    "__dirname"
   ],
   "quotmark": true,
   "trailing": true,
