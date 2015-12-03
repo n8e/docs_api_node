@@ -378,10 +378,11 @@
               }
             });
           for (var i = 0; i < filtered.length; i++) {
-            if (filtered[i] == null) {
+            if (filtered[i] === undefined) {
               filtered.splice(i, 1);
             }
           }
+          console.log(filtered);
           res.json(filtered);
         });
     },
@@ -408,10 +409,11 @@
               }
             });
           for (var i = 0; i < filtered.length; i++) {
-            if (filtered[i] == null) {
+            if (filtered[i] === undefined) {
               filtered.splice(i, 1);
             }
           }
+          console.log(filtered);
           res.json(filtered);
         });
     },
