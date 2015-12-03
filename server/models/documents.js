@@ -1,6 +1,6 @@
 // require needed modules
 var mongoose = require('mongoose'),
-  User = require('./users'),
+  // User = require('./users'),
   Schema = mongoose.Schema;
 
 // create a schema
