@@ -16,7 +16,8 @@
     "require",
     "console",
     "res",
-    "process"
+    "process",
+    "_dirname"
   ],
   "quotmark": true,
   "trailing": true,
