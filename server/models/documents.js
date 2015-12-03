@@ -10,7 +10,8 @@ var DocumentSchema = new Schema({
     ref: 'User'
   },
   title: {
-    type: String
+    type: String,
+    unique: true
   },
   content: {
     type: String
