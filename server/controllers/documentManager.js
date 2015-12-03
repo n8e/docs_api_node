@@ -7,6 +7,7 @@
     Role = require('../models/roles'),
     jsonwebtoken = require('jsonwebtoken'),
     mongoose = require('mongoose'),
+    moment = require('moment'),
     secretKey = config.secretKey;
 
   // create token for authentication
@@ -72,6 +73,7 @@
         //
         // add the role to the user before being saved
         //
+
         user.role = roles[0].title;
         // save the user object
         user.save(function(err) {
@@ -356,10 +358,12 @@
 
     // to get the mongo cluster of all the documents filtered by 'User' role
     getAllDocumentsByRoleUser: function(req, res) {
-      Document.find({
-          role: User
-        })
+      Document.find({})
         .populate('ownerId')
+        .limit(4)
+        .sort([
+          ['dateCreated', 'descending']
+        ])
         .exec(function(err, documents) {
           if (err) {
             res.send(err);
@@ -386,6 +390,10 @@
     getAllDocumentsByRoleAdministrator: function(req, res) {
       Document.find({})
         .populate('ownerId')
+        .limit(4)
+        .sort([
+          ['dateCreated', 'descending']
+        ])
         .exec(function(err, documents) {
           if (err) {
             res.send(err);
@@ -409,8 +417,13 @@
 
     // to get the mongo cluster of all the documents filtered by date
     getAllDocumentsByDate: function(req, res) {
-      Document.find({})
-        .sort('dateCreated')
+      Document.find({
+          dateCreated: {
+              $gt: moment(new Date('2015-12-02')),
+              $lt: moment(new Date('2015-12-04'))
+            }
+        })
+        // .limit(4)
         .exec(function(err, documents) {
           if (err) {
             res.send(err);
