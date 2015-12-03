@@ -183,7 +183,7 @@
     },
 
     // to get the mongo cluster of all the user roles
-    getAllUsersRoles: function() {
+    getAllUsersRoles: function(req, res) {
       User.find({
         'role': 'User'
       }, function(err, users) {
@@ -196,7 +196,7 @@
     },
 
     // to get the mongo cluster of all the user roles
-    getAllAdminRoles: function() {
+    getAllAdminRoles: function(req, res) {
       User.find({
         'role': 'Administrator'
       }, function(err, users) {
