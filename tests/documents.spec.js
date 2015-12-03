@@ -185,7 +185,7 @@ describe('Administrator Documents', function() {
       .post(url + '/api/documents')
       .set('x-access-token', authToken)
       .send(document2)
-      .end(function(err, res) {
+      .end(function(err) {
         if (err) {
           return err;
         } else {
