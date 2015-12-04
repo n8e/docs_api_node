@@ -9,13 +9,11 @@
     moment = require('moment'),
     secretKey = config.secretKey;
 
+  var userId;
+
   // create token for authentication
   function createToken(user) {
-    var token = jsonwebtoken.sign({
-      id: user._id,
-      name: user.name,
-      username: user.username
-    }, secretKey, {
+    var token = jsonwebtoken.sign(user, secretKey, {
       expiresIn: 1440
     });
     return token;
@@ -56,9 +54,6 @@
         password: req.body.password
       });
 
-      // assign a token to the created user
-      var token = createToken(user);
-
       // seed the administrator and user roles
       seedingRoles();
 
@@ -74,12 +69,15 @@
         //
 
         user.role = roles[0].title;
+        // assign a token to the created user
+        var token = createToken(user);
         // save the user object
         user.save(function(err) {
           if (err) {
             res.send(err);
             return;
           }
+          console.log(user);
           res.json({
             success: true,
             message: 'User has been created!',
@@ -122,7 +120,7 @@
         }
       });
     },
-
+    // logout function
     logout: function(req, res) {
       delete req.headers['x-access-token'];
       return res.status(200).json({
@@ -139,7 +137,7 @@
         res.json(roles);
       });
     },
-    //creates a role in the db
+    // creates a role in the db
     createRole: function(req, res) {
       var role = new Role({
         id: req.body.id,
@@ -255,7 +253,9 @@
     // update user by id
     updateUser: function(req, res) {
       var id = req.param('id');
-      User.findOneAndUpdate({
+      // update function
+      var updateMe = function(id) {
+        User.findOneAndUpdate({
           _id: id
         }, {
           name: {
@@ -275,9 +275,7 @@
           username: req.body.username,
           password: req.body.password,
           role: req.body.role
-        },
-
-        function(err, users) {
+        }, function(err, users) {
           if (err) {
             res.send(err);
             return;
@@ -289,6 +287,11 @@
             });
           }
         });
+      }
+      if (req.param('id')) {
+        var id = req.decoded._id;
+        updateMe(id.trim());
+      }
     },
 
     // update document by id
@@ -320,21 +323,35 @@
 
     // delete user by id
     deleteUser: function(req, res) {
-      var id = req.param('id');
-      User.findOneAndRemove({
-        _id: id
-      }, function(err, users) {
-        if (err) {
-          res.json(401, {
-            message: err
+      // delete function
+      var deleteMe = function(id) {
+        User.findOneAndRemove({
+            _id: id
+          },
+          function(err, users) {
+            if (err) {
+              res.json(401, {
+                message: err
+              });
+              return;
+            } else {
+              res.json(200, {
+                message: users
+              });
+            }
           });
-          return;
-        } else {
-          res.json(200, {
-            message: users
-          });
-        }
-      });
+      };
+      if (req.decoded.role === 'Administrator' && req.param('id')) {
+        console.log('Here!');
+        var id = req.param('id');
+        deleteMe(id.trim());
+      } else if (req.param('id')) {
+        var id = req.decoded._id;
+        deleteMe(id.trim());
+      } else if (req.decoded.role === 'Administrator' && !req.param('id')) {
+        var id = req.decoded._id;
+        deleteMe(id.trim());
+      }
     },
 
     // delete document by id
@@ -370,7 +387,6 @@
             res.send(err);
             return;
           }
-
           var filtered = documents.map(
             function(obj) {
               if (obj.ownerId.role === 'User') {
@@ -401,7 +417,6 @@
             res.send(err);
             return;
           }
-
           var filtered = documents.map(
             function(obj) {
               if (obj.ownerId.role === 'Administrator') {
