@@ -70,7 +70,6 @@
         if (err) {
           throw err;
         }
-
         if (!user) {
           res.status(500).send({
             message: 'User doesnt exist'
@@ -129,7 +128,6 @@
         });
       });
     },
-
     // to get the mongo cluster of all the users stored on the db
     getAllUsers: function(req, res) {
       User.find({}, function(err, users) {
@@ -140,7 +138,6 @@
         res.json(users);
       });
     },
-
     // get user by id
     getUser: function(req, res) {
       var id = req.param('id');
@@ -154,7 +151,6 @@
         res.json(users);
       });
     },
-
     // to get the mongo cluster of all the user roles
     getAllUsersRoles: function(req, res) {
       User.find({
@@ -167,7 +163,6 @@
         res.json(users);
       });
     },
-
     // to get the mongo cluster of all the user roles
     getAllAdminRoles: function(req, res) {
       User.find({
@@ -180,7 +175,6 @@
         res.json(users);
       });
     },
-
     // get document by id
     getDocument: function(req, res) {
       var id = req.param('id');
@@ -194,7 +188,6 @@
         res.send(documents);
       });
     },
-
     // to get the mongo cluster of all the documents stored
     getAllDocuments: function(req, res) {
       Document.find({}, function(err, documents) {
@@ -205,7 +198,6 @@
         res.json(documents);
       });
     },
-
     createDocument: function(req, res) {
       var document = new Document({
         ownerId: req.decoded._id,
@@ -223,7 +215,6 @@
         });
       });
     },
-
     // update user by id
     updateUser: function(req, res) {
       var id = req.param('id');
@@ -267,32 +258,53 @@
         updateMe(id4.trim());
       }
     },
-
     // update document by id
     updateDocument: function(req, res) {
       var id = req.param('id');
-      Document.findOneAndUpdate({
-          _id: id
-        }, {
-          title: req.body.title,
-          content: req.body.content
-        }, {
-          title: req.body.title,
-          content: req.body.content
-        },
-
-        function(err, documents) {
-          if (err) {
-            res.send(err);
-            return;
-          } else {
-            console.log(documents);
-            res.json({
-              success: true,
-              message: 'Successfully updated Document!'
+      Document.findById(req.params.id).exec(function(err, document) {
+        if (err) {
+          res.status(500).send({
+            message: 'There was a problem deleting your document.'
+          });
+        } else {
+          if (document === null) {
+            res.send({
+              message: 'No document found.'
             });
+          } else {
+            console.log('DOCUMENT ' + JSON.stringify(document.ownerId));
+            if (req.decoded._id !== document.ownerId && req.decoded.role === 'User') {
+              //send 403 status and forbidden message
+              res.status(403).send({
+                message: 'Forbidden to update this document.'
+              });
+            } else {
+              //delete or update
+              Document.findOneAndUpdate({
+                  _id: id
+                }, {
+                  title: req.body.title,
+                  content: req.body.content
+                }, {
+                  title: req.body.title,
+                  content: req.body.content
+                },
+                function(err, documents) {
+                  if (err) {
+                    res.send(err);
+                    return;
+                  } else {
+                    console.log(documents);
+                    res.json({
+                      success: true,
+                      message: 'Successfully updated Document!'
+                    });
+                  }
+                });
+            }
           }
-        });
+        }
+      });
     },
 
     // delete user by id
@@ -330,29 +342,41 @@
     // delete document by id
     deleteDocument: function(req, res) {
       var id = req.param('id');
-
-      Document.find({})
-        .populate('ownerId')
-        .findOneAndRemove({
-          _id: id
-        }, function(err, documents) {
-          if (req.decoded._id === ownerId._id || ownerId.role === 'Administrator') {
-            if (err) {
-              res.json(401, {
-                message: err
+      Document.findById(req.params.id).exec(function(err, document) {
+        if (err) {
+          res.status(500).send({
+            message: 'There was a problem deleting your document.'
+          });
+        } else {
+          if (document === null) {
+            res.send({
+              message: 'No document found.'
+            });
+          } else {
+            console.log('DOCUMENT ' + JSON.stringify(document.ownerId));
+            if (req.decoded._id !== document.ownerId && req.decoded.role === 'User') {
+              //send 403 status and forbidden message
+              res.status(403).send({
+                message: 'Forbidden to delete this document.'
               });
-              return;
             } else {
-              res.json(200, {
-                message: documents
+              //delete or update
+              Document.findOneAndRemove({
+                _id: req.params.id
+              }).exec(function(err, documents) {
+                if (err) {
+                  return err;
+                } else {
+                  res.json(200, {
+                    message: documents
+                  });
+                }
               });
             }
           }
-        });
-
+        }
+      });
     },
-
-
     // to get the mongo cluster of all the documents filtered by 'User' role
     getAllDocumentsByRoleUser: function(req, res) {
       Document.find({})
@@ -410,7 +434,6 @@
           res.json(filtered);
         });
     },
-
     // to get the mongo cluster of all the documents filtered by date
     getAllDocumentsByDate: function(req, res) {
       Document.find({
