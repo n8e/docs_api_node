@@ -21,19 +21,26 @@ describe('Roles', function() {
         }
       });
   });
-  
-  it('validates that a new role created has a unique title', function() {
-    expect(true).toBe(true);
-  });
 
-  it('validates that all documents are returned, limited by a specified ' + 
-    'number, when getAllDocuments is called', function() {
-    expect(true).toBe(true);
+  it('validates that a new role created has a unique title', function(done) {
+    request
+      .post(url + '/api/users/roles')
+      .send({
+        id: 1,
+        title: 'Administrator'
+      })
+      .end(function(err) {
+        if (err) {
+          return err;
+        } else {
+          expect(200, done);
+          expect('Content-Type', 'json', done);
+          expect({
+            code: 11000,
+            index: 0
+          }, done);
+          done();
+        }
+      });
   });
-
-  it('validates that all documents are returned in order of their' + 
-    ' published dates, starting from the most recent when getAllDocuments is called', function() {
-    expect(true).toBe(true);
-  });
-
 });

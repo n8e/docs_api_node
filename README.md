@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/andela-nmartin/docms2/badges/gpa.svg)](https://codeclimate.com/github/andela-nmartin/docms2)
+[![Test Coverage](https://codeclimate.com/github/andela-nmartin/docms2/badges/coverage.svg)](https://codeclimate.com/github/andela-nmartin/docms2/coverage)
 # Document Management System (Node, Express, Mongo)
 
 ##  Models

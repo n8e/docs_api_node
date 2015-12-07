@@ -1,6 +1,6 @@
 // require needed modules
 var mongoose = require('mongoose'),
-  // User = require('./users'),
+  User = require('./users'),
   Schema = mongoose.Schema;
 
 // create a schema
@@ -14,7 +14,8 @@ var DocumentSchema = new Schema({
     unique: true
   },
   content: {
-    type: String
+    type: String,
+    unique: true
   },
   dateCreated: {
     type: Date,
