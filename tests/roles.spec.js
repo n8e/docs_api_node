@@ -30,13 +30,17 @@ describe('Roles', function() {
         title: 'Administrator'
       })
       .end(function(err, res) {
-        expect(200, done);
-        expect('Content-Type', 'json', done);
-        expect({
-          code: 11000,
-          index: 0
-        }, done);
-        done();
+        if (err) {
+          return err;
+        } else {
+          expect(200, done);
+          expect('Content-Type', 'json', done);
+          expect({
+            code: 11000,
+            index: 0
+          }, done);
+          done();
+        }
       });
   });
 });

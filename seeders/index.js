@@ -26,7 +26,7 @@ module.exports = {
         email: 'sgranger@gmail.com',
         role: 1
       };
-    
+
     // seed role 1 for Administrator
     (function rolesAdminSeed() {
       var roleAdmin = {
@@ -36,7 +36,7 @@ module.exports = {
       request
         .post(url + '/api/users/roles')
         .send(roleAdmin)
-        .end(function(err, res) {
+        .end(function(err) {
           if (err) {
             return err;
           } else {
@@ -53,7 +53,7 @@ module.exports = {
       request
         .post(url + '/api/users/roles')
         .send(roleUser)
-        .end(function(err, res) {
+        .end(function(err) {
           if (err) {
             return err;
           } else {
@@ -66,7 +66,7 @@ module.exports = {
       request
         .post(url + '/api/users')
         .send(user)
-        .end(function(err, res) {
+        .end(function(err) {
           if (err) {
             return err;
           } else {
@@ -74,12 +74,12 @@ module.exports = {
           }
         });
     })();
-     // seed sample second user
+    // seed sample second user
     (function userSeed() {
       request
         .post(url + '/api/users')
         .send(secUser)
-        .end(function(err, res) {
+        .end(function(err) {
           if (err) {
             return err;
           } else {
@@ -92,7 +92,7 @@ module.exports = {
       request
         .post(url + '/api/users')
         .send(admin)
-        .end(function(err, res) {
+        .end(function(err) {
           if (err) {
             return err;
           } else {

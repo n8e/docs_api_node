@@ -9,8 +9,6 @@
     moment = require('moment'),
     secretKey = config.secretKey;
 
-  var userId;
-
   // create token for authentication
   function createToken(user) {
     var token = jsonwebtoken.sign(user, secretKey, {
@@ -244,7 +242,7 @@
           if (err) {
             res.send(err);
             return;
-          } else if (users === null){
+          } else if (users === null) {
             res.send({
               message: 'Not Authorised to update this user.'
             });

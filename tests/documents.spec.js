@@ -236,7 +236,8 @@ describe('Administrator Documents', function() {
   });
 
   it('validates that all documents, limited by a specified number and ordered by published date, ' +
-    'that can be accessed by a role ADMINISTRATOR, are returned when getAllDocumentsByRoleAdministrator is called',
+    'that can be accessed by a role ADMINISTRATOR, are returned when ' +
+    'getAllDocumentsByRoleAdministrator is called',
     function(done) {
       request
         .get(url + '/api/documents/admin')
@@ -276,44 +277,48 @@ describe('Document tests requiring authentication', function() {
         }
       });
   });
-  it('validates that a document can only be updated by the creator or an Administartor (PUT /api/documents)/:id', function(done) {
-    request
-      .put(url + '/api/documents/56653c2694315e222601c735')
-      .set('x-access-token', authToken)
-      .send({
-        title: 'Frodo',
-        content: 'A character in LOTR.'
-      })
-      .end(function(err, res) {
-        if (err) {
-          return err;
-        } else {
-          expect(403, done);
-          expect('Content-Type', 'json', done);
-          expect(typeof res.body).toBe('object');
-          expect({
-            message: 'Forbidden to update this document.'
-          }, done);
-          done();
-        }
-      });
-  });
-  it('validates that a document can only be deleted by the creator or an Administartor (PUT /api/documents)/:id', function(done) {
-    request
-      .del(url + '/api/documents/56653c2694315e222601c735')
-      .set('x-access-token', authToken)
-      .end(function(err, res) {
-        if (err) {
-          return err;
-        } else {
-          expect(403, done);
-          expect('Content-Type', 'json', done);
-          expect(typeof res.body).toBe('object');
-          expect({
-            message: 'Forbidden to delete this document.'
-          }, done);
-          done();
-        }
-      });
-  });
+  it('validates that a document can only be updated by the creator or an ' +
+    'Administrator (PUT /api/documents)/:id',
+    function(done) {
+      request
+        .put(url + '/api/documents/56653c2694315e222601c735')
+        .set('x-access-token', authToken)
+        .send({
+          title: 'Frodo',
+          content: 'A character in LOTR.'
+        })
+        .end(function(err, res) {
+          if (err) {
+            return err;
+          } else {
+            expect(403, done);
+            expect('Content-Type', 'json', done);
+            expect(typeof res.body).toBe('object');
+            expect({
+              message: 'Forbidden to update this document.'
+            }, done);
+            done();
+          }
+        });
+    });
+  it('validates that a document can only be deleted by the creator or an ' +
+    'Administrator (PUT /api/documents)/:id',
+    function(done) {
+      request
+        .del(url + '/api/documents/56653c2694315e222601c735')
+        .set('x-access-token', authToken)
+        .end(function(err, res) {
+          if (err) {
+            return err;
+          } else {
+            expect(403, done);
+            expect('Content-Type', 'json', done);
+            expect(typeof res.body).toBe('object');
+            expect({
+              message: 'Forbidden to delete this document.'
+            }, done);
+            done();
+          }
+        });
+    });
 });
