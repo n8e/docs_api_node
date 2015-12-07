@@ -10,16 +10,20 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-seed.seeder();
-
 // connect to Mongo when the app initializes
 mongoose.connect(config.database, function(err) {
   if (err) {
     console.log(err);
   } else {
+    // mongoose.connection.db.dropDatabase(function(err) {
+    //   console.log('Database dropped');
+    // });
     console.log('Connected to the database.');
   }
 });
+
+// seed users and roles 
+seed.seeder();
 
 app.use(bodyParser.urlencoded({
   extended: true
