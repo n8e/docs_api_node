@@ -29,7 +29,7 @@ describe('Roles', function() {
         id: 1,
         title: 'Administrator'
       })
-      .end(function(err, res) {
+      .end(function(err) {
         if (err) {
           return err;
         } else {
