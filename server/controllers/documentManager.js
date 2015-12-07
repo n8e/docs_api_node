@@ -244,8 +244,11 @@
           if (err) {
             res.send(err);
             return;
+          } else if (users === null){
+            res.send({
+              message: 'Not Authorised to update this user.'
+            });
           } else {
-            console.log(users);
             res.json({
               success: true,
               message: 'Successfully updated User!'
@@ -253,9 +256,15 @@
           }
         });
       };
-      if (req.param('id')) {
-        var id4 = req.decoded._id;
-        updateMe(id4.trim());
+      if (req.decoded.role === 'Administrator' && req.param('id')) {
+        var id5 = req.param('id');
+        updateMe(id5.trim());
+      } else if (req.param('id')) {
+        var id6 = req.decoded._id;
+        updateMe(id6.trim());
+      } else if (req.decoded.role === 'Administrator' && !req.param('id')) {
+        var id7 = req.decoded._id;
+        updateMe(id7.trim());
       }
     },
     // update document by id
@@ -272,7 +281,6 @@
               message: 'No document found.'
             });
           } else {
-            console.log('DOCUMENT ' + JSON.stringify(document.ownerId));
             if (req.decoded._id !== document.ownerId && req.decoded.role === 'User') {
               //send 403 status and forbidden message
               res.status(403).send({
@@ -353,7 +361,6 @@
               message: 'No document found.'
             });
           } else {
-            console.log('DOCUMENT ' + JSON.stringify(document.ownerId));
             if (req.decoded._id !== document.ownerId && req.decoded.role === 'User') {
               //send 403 status and forbidden message
               res.status(403).send({
