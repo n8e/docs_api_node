@@ -39,17 +39,4 @@ describe('Roles', function() {
         done();
       });
   });
-
-  it('validates that all documents are returned, limited by a specified ' +
-    'number, when getAllDocuments is called',
-    function() {
-      expect(true).toBe(true);
-    });
-
-  it('validates that all documents are returned in order of their' +
-    ' published dates, starting from the most recent when getAllDocuments is called',
-    function() {
-      expect(true).toBe(true);
-    });
-
 });

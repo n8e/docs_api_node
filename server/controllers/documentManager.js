@@ -19,28 +19,6 @@
     return token;
   }
 
-  //seed two roles User and Administrator in table
-  function seedingRoles() {
-    var roleAdmin = new Role({
-      id: 1,
-      title: 'Administrator'
-    });
-    roleAdmin.save(function(err) {
-      if (err) {
-        return err;
-      }
-    });
-    var roleUser = new Role({
-      id: 2,
-      title: 'User'
-    });
-    roleUser.save(function(err) {
-      if (err) {
-        return err;
-      }
-    });
-  }
-
   module.exports = {
     // to add a user to the db
     createUser: function(req, res) {
@@ -54,9 +32,6 @@
         password: req.body.password
       });
 
-      // seed the administrator and user roles
-      seedingRoles();
-
       // find a role based on the input on the body
       Role.find({
         id: req.body.role
@@ -67,7 +42,7 @@
         //
         // add the role to the user before being saved
         //
-
+        console.log(JSON.stringify(roles));
         user.role = roles[0].title;
         // assign a token to the created user
         var token = createToken(user);
@@ -233,7 +208,7 @@
 
     createDocument: function(req, res) {
       var document = new Document({
-        ownerId: req.decoded.id,
+        ownerId: req.decoded._id,
         title: req.body.title,
         content: req.body.content
       });
@@ -242,7 +217,6 @@
           res.send(err);
           return;
         }
-
         res.json({
           success: true,
           message: 'Document has been created!'
@@ -287,10 +261,10 @@
             });
           }
         });
-      }
+      };
       if (req.param('id')) {
-        var id = req.decoded._id;
-        updateMe(id.trim());
+        var id4 = req.decoded._id;
+        updateMe(id4.trim());
       }
     },
 
@@ -342,35 +316,40 @@
           });
       };
       if (req.decoded.role === 'Administrator' && req.param('id')) {
-        console.log('Here!');
         var id = req.param('id');
         deleteMe(id.trim());
       } else if (req.param('id')) {
-        var id = req.decoded._id;
-        deleteMe(id.trim());
+        var id1 = req.decoded._id;
+        deleteMe(id1.trim());
       } else if (req.decoded.role === 'Administrator' && !req.param('id')) {
-        var id = req.decoded._id;
-        deleteMe(id.trim());
+        var id2 = req.decoded._id;
+        deleteMe(id2.trim());
       }
     },
 
     // delete document by id
     deleteDocument: function(req, res) {
       var id = req.param('id');
-      Document.findOneAndRemove({
-        _id: id
-      }, function(err, documents) {
-        if (err) {
-          res.json(401, {
-            message: err
-          });
-          return;
-        } else {
-          res.json(200, {
-            message: documents
-          });
-        }
-      });
+
+      Document.find({})
+        .populate('ownerId')
+        .findOneAndRemove({
+          _id: id
+        }, function(err, documents) {
+          if (req.decoded._id === ownerId._id || ownerId.role === 'Administrator') {
+            if (err) {
+              res.json(401, {
+                message: err
+              });
+              return;
+            } else {
+              res.json(200, {
+                message: documents
+              });
+            }
+          }
+        });
+
     },
 
 
@@ -398,7 +377,6 @@
               filtered.splice(i, 1);
             }
           }
-          console.log(filtered);
           res.json(filtered);
         });
     },
@@ -437,11 +415,11 @@
     getAllDocumentsByDate: function(req, res) {
       Document.find({
           dateCreated: {
-            $gt: moment(new Date('2015-12-02')),
-            $lt: moment(new Date('2015-12-04'))
+            $gt: moment().subtract(1, 'day'),
+            $lt: moment().add(1, 'day')
           }
         })
-        // .limit(4)
+        .limit(4)
         .exec(function(err, documents) {
           if (err) {
             res.send(err);

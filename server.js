@@ -4,10 +4,13 @@ var config = require('./server/config/config');
 var express = require('express');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
+var seed = require('./seeders/index');
 var app = express();
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+
+seed.seeder();
 
 // connect to Mongo when the app initializes
 mongoose.connect(config.database, function(err) {
