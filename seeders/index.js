@@ -10,6 +10,14 @@ module.exports = {
         username: 'smalik',
         role: 2
       },
+      secUser = {
+        firstname: 'Thomas',
+        lastname: 'Nyambati',
+        password: '12345',
+        email: 'tnyambati@gmail.com',
+        username: 'tn',
+        role: 2
+      },
       admin = {
         username: 'Sonnie',
         password: '12345',
@@ -63,6 +71,19 @@ module.exports = {
             return err;
           } else {
             console.log('Seeded user Malika');
+          }
+        });
+    })();
+     // seed sample second user
+    (function userSeed() {
+      request
+        .post(url + '/api/users')
+        .send(secUser)
+        .end(function(err, res) {
+          if (err) {
+            return err;
+          } else {
+            console.log('Seeded user Thomas');
           }
         });
     })();

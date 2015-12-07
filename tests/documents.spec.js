@@ -255,3 +255,65 @@ describe('Administrator Documents', function() {
         });
     });
 });
+// tests for manipulating documents access
+describe('Document tests requiring authentication', function() {
+  // perform login function first
+  beforeEach(function login(done) {
+    request
+      .post(url + '/api/users/login')
+      .send({
+        username: 'tn',
+        password: '12345'
+      })
+      .end(function(err, res) {
+        if (!err) {
+          userId = res.body.id;
+          authToken = res.body.token;
+          done();
+        } else {
+          console.log('There was a problem logging you in.\n' + '\n' + res.body.message);
+          done();
+        }
+      });
+  });
+  it('validates that a document can only be updated by the creator or an Administartor (PUT /api/documents)/:id', function(done) {
+    request
+      .put(url + '/api/documents/56653c2694315e222601c735')
+      .set('x-access-token', authToken)
+      .send({
+        title: 'Frodo',
+        content: 'A character in LOTR.'
+      })
+      .end(function(err, res) {
+        if (err) {
+          return err;
+        } else {
+          expect(403, done);
+          expect('Content-Type', 'json', done);
+          expect(typeof res.body).toBe('object');
+          expect({
+            message: 'Forbidden to update this document.'
+          }, done);
+          done();
+        }
+      });
+  });
+  it('validates that a document can only be deleted by the creator or an Administartor (PUT /api/documents)/:id', function(done) {
+    request
+      .del(url + '/api/documents/56653c2694315e222601c735')
+      .set('x-access-token', authToken)
+      .end(function(err, res) {
+        if (err) {
+          return err;
+        } else {
+          expect(403, done);
+          expect('Content-Type', 'json', done);
+          expect(typeof res.body).toBe('object');
+          expect({
+            message: 'Forbidden to delete this document.'
+          }, done);
+          done();
+        }
+      });
+  });
+});
