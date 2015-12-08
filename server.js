@@ -15,22 +15,24 @@ mongoose.connect(config.database, function(err) {
   if (err) {
     console.log(err);
   } else {
-    // mongoose.connection.db.dropDatabase(function(err) {
-    //   console.log('Database dropped');
-    // });
+    mongoose.connection.db.dropDatabase(function(err) {
+      if (err) {
+        return err;
+      } else {
+        console.log('Dropped database');
+        (function() {
+          seed.seeder();
+        })();
+      }
+    });
     console.log('Connected to the database.');
   }
 });
-
-// seed users and roles 
-seed.seeder();
 
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
-
-
 
 app.use(morgan('dev'));
 
@@ -38,7 +40,6 @@ app.use(express.static(__dirname + '/public'));
 
 var api = require('./server/routes/api')(app, express, io);
 app.use('/api', api);
-
 
 app.get('*', function(req, res) {
   res.send('System Under Construction...');
