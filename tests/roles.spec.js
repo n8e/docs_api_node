@@ -8,10 +8,9 @@ describe('Roles', function() {
       .end(function(err, res) {
         // expected responses after seeding
         if (err) {
-          return err;
+          expect(err.status).not.toEqual(200);
         } else {
-          expect(200, done);
-          expect('Content-Type', 'json', done);
+          expect(res.status).toBe(200);
           expect(res.body.length).toEqual(2);
           expect(res.body[0].id).toEqual(1);
           expect(res.body[0].title).toEqual('Administrator');
@@ -29,16 +28,14 @@ describe('Roles', function() {
         id: 1,
         title: 'Administrator'
       })
-      .end(function(err) {
+      .end(function(err, res) {
         if (err) {
-          return err;
+          expect(err.status).not.toEqual(200);
         } else {
-          expect(200, done);
-          expect('Content-Type', 'json', done);
-          expect({
-            code: 11000,
-            index: 0
-          }, done);
+          expect(res.status).toEqual(200);
+          expect(res.body.code).toEqual(11000);
+          expect(res.body.index).toEqual(0);
+          expect(res.body.errmsg).toContain('E11000 duplicate key error index');
           done();
         }
       });

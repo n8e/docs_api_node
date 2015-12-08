@@ -10,8 +10,8 @@ var RolesSchema = new Schema({
   },
   title: {
     type: String,
-    enum: ['Administrator', 'User', 'Standard'],
-    default: 'Standard',
+    enum: ['Administrator', 'User'],
+    default: 'User',
     unique: true
   }
 

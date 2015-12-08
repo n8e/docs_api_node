@@ -19,8 +19,7 @@ var UserSchema = new Schema({
   email: String,
   password: {
     type: String,
-    required: true,
-    select: false
+    required: true
   },
   role: {
     type: String,
