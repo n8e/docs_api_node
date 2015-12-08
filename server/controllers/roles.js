@@ -23,7 +23,7 @@
       });
       role.save(function(err) {
         if (err) {
-          res.send(err);
+          res.status(409).send(err);
           return;
         }
         res.json({

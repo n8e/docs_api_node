@@ -32,12 +32,12 @@ describe('Roles', function() {
         if (err) {
           expect(err.status).not.toEqual(200);
         } else {
-          expect(res.status).toEqual(200);
+          expect(res.status).toEqual(409);
           expect(res.body.code).toEqual(11000);
           expect(res.body.index).toEqual(0);
           expect(res.body.errmsg).toContain('E11000 duplicate key error index');
-          done();
         }
+        done();
       });
   });
 });
