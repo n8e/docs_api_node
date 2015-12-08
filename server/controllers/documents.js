@@ -2,6 +2,7 @@
    'use strict';
    // get the required models and db connection
    var User = require('../models/users'),
+     moment = require('moment'),
      Document = require('../models/documents');
 
    module.exports = {
