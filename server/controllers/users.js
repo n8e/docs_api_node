@@ -3,10 +3,8 @@
   // get the required models and db connection
   var config = require('../config/config'),
     User = require('../models/users'),
-    Document = require('../models/documents'),
     Role = require('../models/roles'),
     jsonwebtoken = require('jsonwebtoken'),
-    moment = require('moment'),
     secretKey = config.secretKey;
 
   // create token for authentication
@@ -187,13 +185,13 @@
           }
         });
       };
-      if (req.decoded.role === 'Administrator' && req.param('id')) {
-        var id5 = req.param('id');
+      if (req.decoded.role === 'Administrator' && id) {
+        var id5 = id;
         updateMe(id5.trim());
-      } else if (req.param('id')) {
+      } else if (id) {
         var id6 = req.decoded._id;
         updateMe(id6.trim());
-      } else if (req.decoded.role === 'Administrator' && !req.param('id')) {
+      } else if (req.decoded.role === 'Administrator' && !id) {
         var id7 = req.decoded._id;
         updateMe(id7.trim());
       }
