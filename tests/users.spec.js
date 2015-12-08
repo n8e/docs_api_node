@@ -15,21 +15,17 @@ describe('Users', function() {
       })
       .end(function(err, res) {
         if (err) {
-          return err;
+          expect(err.status).not.toEqual(200);
         } else {
-          expect(200, done);
-          expect('Content-Type', 'json', done);
+          expect(res.status).toEqual(200);
           expect(typeof res.body).toBe('object');
-          expect({
-            success: true
-          }, done);
-          expect({
-            message: 'User has been created!'
-          }, done);
+          expect(res.body.success).toBe(true);
+          expect(res.body.message).toBe('User has been created!');
           done();
         }
       });
   });
+
   it('validates that the new user created is unique (POST /api/users)', function(done) {
     request
       .post(url + '/api/users')
@@ -43,19 +39,18 @@ describe('Users', function() {
       })
       .end(function(err, res) {
         if (err) {
-          return err;
+          expect(err.status).not.toEqual(200);
         } else {
-          expect(200, done);
-          expect('Content-Type', 'json', done);
+          expect(res.status).toEqual(200);
           expect(typeof res.body).toBe('object');
-          expect({
-            code: 11000,
-            index: 0
-          }, done);
+          expect(res.body.code).toEqual(11000);
+          expect(res.body.errmsg).toContain('E11000 duplicate key error index');
+          expect(res.body.index).toEqual(0);
           done();
         }
       });
   });
+
   it('validates that all users are returned when getAllUsers ' +
     'function in the controller is called (GET /api/users)',
     function(done) {
@@ -64,13 +59,10 @@ describe('Users', function() {
         .set('Accept', 'application/json')
         .end(function(err, res) {
           if (err) {
-            return err;
+            expect(err.status).not.toEqual(200);
           } else {
-            expect(200, done);
-            expect('Content-Type', 'json', done);
-            expect(res.body.length).toBeDefined();
-            expect(res.body.length).not.toBeNull();
-            expect(res.body.length > 0).toBeTruthy();
+            expect(res.status).toEqual(200);
+            expect(res.body.length).toBeGreaterThan(0);
             expect(res.body[res.body.length - 1].username).toEqual('batman');
             expect(res.body[res.body.length - 1].email).toEqual('batman@cave.com');
             expect(typeof res.body).toBe('object');
@@ -78,18 +70,38 @@ describe('Users', function() {
           }
         });
     });
+
   it('validates that the new user created has a defined role, has a first name and a last name', function(done) {
     request
       .get(url + '/api/users')
       .end(function(err, res) {
         if (err) {
-          return err;
+          expect(err.status).not.toEqual(200);
         } else {
-          expect(200, done);
-          expect('Content-Type', 'json', done);
+          expect(res.status).toEqual(200);
           expect(res.body[res.body.length - 1].role).toEqual('User');
           expect(res.body[res.body.length - 1].name.first).toEqual('Bruce');
           expect(res.body[res.body.length - 1].name.last).toEqual('Wayne');
+          done();
+        }
+      });
+  });
+
+  it('validates that a user can be logged in', function(done) {
+    request
+      .post(url + '/api/users/login')
+      .send({
+        username: 'smalik',
+        password: '12345'
+      })
+      .end(function(err, res) {
+        if (err) {
+          expect(err.status).not.toEqual(200);
+        } else {
+          expect(res.status).toEqual(200);
+          expect(res.body.success).toBe(true);
+          expect(res.body.message).toBe('Successfully logged in!');
+          expect(res.body.token).toBeDefined();
           done();
         }
       });

@@ -17,7 +17,12 @@
     "console",
     "res",
     "process",
-    "__dirname"
+    "__dirname",
+    "expect",
+    "it",
+    "describe",
+    "beforeEach",
+    "module"
   ],
   "quotmark": true,
   "trailing": true,

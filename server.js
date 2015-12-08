@@ -10,7 +10,8 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-// connect to Mongo when the app initializes
+// connect to Mongo when the app initializes and 
+// drop the db before seeding
 mongoose.connect(config.database, function(err) {
   if (err) {
     console.log(err);
@@ -38,12 +39,11 @@ app.use(morgan('dev'));
 
 app.use(express.static(__dirname + '/public'));
 
-var api = require('./server/routes/api')(app, express, io);
+var api = require('./server/routes/index')(app, express, io);
 app.use('/api', api);
 
 app.get('*', function(req, res) {
   res.send('System Under Construction...');
-  // res.sendFile(__dirname + '/public/views/index.html');
 });
 
 http.listen(config.port, function(err) {

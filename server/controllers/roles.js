@@ -14,6 +14,7 @@
         res.json(roles);
       });
     },
+
     // creates a role in the db
     createRole: function(req, res) {
       var role = new Role({

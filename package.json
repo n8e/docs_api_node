@@ -4,7 +4,7 @@
   "description": "document management system",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "jasmine-node tests/ --verbose"
   },
   "repository": {
     "type": "git",

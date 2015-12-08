@@ -1,14 +1,14 @@
  (function() {
    'use strict';
    // get the required models and db connection
-   var User = require('../models/users'),
-     moment = require('moment'),
-     Document = require('../models/documents');
+   var moment = require('moment'),
+     Document = require('../models/documents'),
+     User = require('../models/users');
 
    module.exports = {
      // get document by id
      getDocument: function(req, res) {
-       var id = req.param('id');
+       var id = req.params.id;
        Document.find({
          _id: id
        }, function(err, documents) {
@@ -19,6 +19,7 @@
          res.send(documents);
        });
      },
+
      // to get the mongo cluster of all the documents stored
      getAllDocuments: function(req, res) {
        Document.find({}, function(err, documents) {
@@ -29,6 +30,7 @@
          res.json(documents);
        });
      },
+
      createDocument: function(req, res) {
        var document = new Document({
          ownerId: req.decoded._id,
@@ -40,33 +42,31 @@
            res.send(err);
            return;
          }
-         res.json({
-           success: true,
-           message: 'Document has been created!'
-         });
+         res.send(document);
        });
      },
+
      // update document by id
      updateDocument: function(req, res) {
-       var id = req.param('id');
+       var id = req.params.id;
        Document.findById(req.params.id).exec(function(err, document) {
          if (err) {
            res.status(500).send({
              message: 'There was a problem deleting your document.'
            });
          } else {
-           if (document === null) {
+           if (!document) {
              res.send({
                message: 'No document found.'
              });
            } else {
              if (req.decoded._id !== document.ownerId && req.decoded.role === 'User') {
-               //send 403 status and forbidden message
+               // send 403 status and forbidden message
                res.status(403).send({
                  message: 'Forbidden to update this document.'
                });
              } else {
-               //delete or update
+               // delete or update
                Document.findOneAndUpdate({
                    _id: id
                  }, {
@@ -93,34 +93,34 @@
          }
        });
      },
+
      // delete document by id
      deleteDocument: function(req, res) {
-       var id = req.param('id');
        Document.findById(req.params.id).exec(function(err, document) {
          if (err) {
            res.status(500).send({
              message: 'There was a problem deleting your document.'
            });
          } else {
-           if (document === null) {
+           if (!document) {
              res.send({
                message: 'No document found.'
              });
            } else {
              if (req.decoded._id !== document.ownerId && req.decoded.role === 'User') {
-               //send 403 status and forbidden message
+               // send 403 status and forbidden message
                res.status(403).send({
                  message: 'Forbidden to delete this document.'
                });
              } else {
-               //delete or update
+               // delete or update
                Document.findOneAndRemove({
                  _id: req.params.id
                }).exec(function(err, documents) {
                  if (err) {
                    return err;
                  } else {
-                   res.json(200, {
+                   res.status(200).json({
                      message: documents
                    });
                  }
@@ -130,6 +130,7 @@
          }
        });
      },
+
      // to get the mongo cluster of all the documents filtered by 'User' role
      getAllDocumentsByRoleUser: function(req, res) {
        Document.find({})
@@ -150,14 +151,13 @@
                }
              });
            for (var i = 0; i < filtered.length; i++) {
-             if (filtered[i] === undefined) {
+             if (!filtered[i]) {
                filtered.splice(i, 1);
              }
            }
            res.json(filtered);
          });
      },
-
 
      // to get the mongo cluster of all the documents filtered by 'Administrator' role
      getAllDocumentsByRoleAdministrator: function(req, res) {
@@ -179,14 +179,14 @@
                }
              });
            for (var i = 0; i < filtered.length; i++) {
-             if (filtered[i] === undefined) {
+             if (!filtered[i]) {
                filtered.splice(i, 1);
              }
            }
-           console.log(filtered);
            res.json(filtered);
          });
      },
+
      // to get the mongo cluster of all the documents filtered by date
      getAllDocumentsByDate: function(req, res) {
        Document.find({
@@ -203,6 +203,19 @@
            }
            res.json(documents);
          });
+     },
+
+     getAllDocumentsParticularUser: function(req, res) {
+       var id = req.param('id');
+       User.find({
+         ownerId: id
+       }, function(err, documents) {
+         if (err) {
+           res.send(err);
+           return;
+         }
+         res.json(documents);
+       });
      }
    };
  })();

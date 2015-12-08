@@ -35,10 +35,7 @@
         if (err) {
           res.send(err);
         }
-        //
         // add the role to the user before being saved
-        //
-        console.log(JSON.stringify(roles));
         user.role = roles[0].title;
         // assign a token to the created user
         var token = createToken(user);
@@ -48,7 +45,6 @@
             res.send(err);
             return;
           }
-          console.log(user);
           res.json({
             success: true,
             message: 'User has been created!',
@@ -62,7 +58,7 @@
     login: function(req, res) {
       User.findOne({
         username: req.body.username
-      }).select('name username password').exec(function(err, user) {
+      }).exec(function(err, user) {
         if (err) {
           throw err;
         }
@@ -77,9 +73,9 @@
               message: 'Invalid Password'
             });
           } else {
-            ///// token
+            // token
+            delete user.password;
             var token = createToken(user);
-
             res.json({
               id: user._id,
               success: true,
@@ -90,6 +86,7 @@
         }
       });
     },
+
     // logout function
     logout: function(req, res) {
       delete req.headers['x-access-token'];
@@ -97,6 +94,7 @@
         'message': 'User has been successfully logged out'
       });
     },
+
     // to get the mongo cluster of all the users stored on the db
     getAllUsers: function(req, res) {
       User.find({}, function(err, users) {
@@ -107,9 +105,10 @@
         res.json(users);
       });
     },
+
     // get user by id
     getUser: function(req, res) {
-      var id = req.param('id');
+      var id = req.params.id;
       User.find({
         _id: id
       }, function(err, users) {
@@ -120,6 +119,7 @@
         res.json(users);
       });
     },
+
     // to get the mongo cluster of all the user roles
     getAllUsersRoles: function(req, res) {
       User.find({
@@ -132,6 +132,7 @@
         res.json(users);
       });
     },
+
     // to get the mongo cluster of all the user roles
     getAllAdminRoles: function(req, res) {
       User.find({
@@ -144,9 +145,10 @@
         res.json(users);
       });
     },
+
     // update user by id
     updateUser: function(req, res) {
-      var id = req.param('id');
+      var id = req.params.id;
       // update function
       var updateMe = function(id) {
         User.findOneAndUpdate({
@@ -173,7 +175,7 @@
           if (err) {
             res.send(err);
             return;
-          } else if (users === null) {
+          } else if (!users) {
             res.send({
               message: 'Not Authorised to update this user.'
             });
@@ -196,6 +198,7 @@
         updateMe(id7.trim());
       }
     },
+
     // delete user by id
     deleteUser: function(req, res) {
       // delete function
@@ -203,7 +206,7 @@
         User.findOneAndRemove({
             _id: id
           },
-          function(err, users) {
+          function(err, user) {
             if (err) {
               res.json(401, {
                 message: err
@@ -211,20 +214,21 @@
               return;
             } else {
               res.json(200, {
-                message: users
+                message: user
               });
             }
           });
       };
-      if (req.decoded.role === 'Administrator' && req.param('id')) {
-        var id = req.param('id');
+      if (req.decoded.role === 'Administrator') {
+        var id = req.params.id;
         deleteMe(id.trim());
-      } else if (req.param('id')) {
+      } else if (req.decoded._id === req.params.id) {
         var id1 = req.decoded._id;
         deleteMe(id1.trim());
-      } else if (req.decoded.role === 'Administrator' && !req.param('id')) {
-        var id2 = req.decoded._id;
-        deleteMe(id2.trim());
+      } else {
+        res.json(403, {
+          message: 'Not allowed to delete this user.'
+        });
       }
     }
   };
