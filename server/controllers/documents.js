@@ -1,11 +1,8 @@
  (function() {
    'use strict';
    // get the required models and db connection
-   var config = require('../config/config'),
-     User = require('../models/users'),
-     Document = require('../models/documents'),
-     jsonwebtoken = require('jsonwebtoken'),
-     secretKey = config.secretKey;
+   var User = require('../models/users'),
+     Document = require('../models/documents');
 
    module.exports = {
      // get document by id

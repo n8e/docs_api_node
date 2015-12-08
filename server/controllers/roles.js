@@ -1,11 +1,7 @@
 (function() {
   'use strict';
   // get the required models and db connection
-  var config = require('../config/config'),
-    Role = require('../models/roles'),
-    jsonwebtoken = require('jsonwebtoken'),
-    moment = require('moment'),
-    secretKey = config.secretKey;
+  var Role = require('../models/roles');
 
   module.exports = {
     // gets all the saved roles from the db
