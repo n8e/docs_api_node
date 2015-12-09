@@ -5,7 +5,7 @@
 
   module.exports = {
     // gets all the saved roles from the db
-    getRoles: function(req, res) {
+    get: function(req, res) {
       Role.find({}, function(err, roles) {
         if (err) {
           res.send(err);
@@ -16,7 +16,7 @@
     },
 
     // creates a role in the db
-    createRole: function(req, res) {
+    create: function(req, res) {
       var role = new Role({
         id: req.body.id,
         title: req.body.title

@@ -17,7 +17,7 @@
 
   module.exports = {
     // to add a user to the db
-    createUser: function(req, res) {
+    create: function(req, res) {
       var user = new User({
         name: {
           first: req.body.firstname,
@@ -96,7 +96,7 @@
     },
 
     // to get the mongo cluster of all the users stored on the db
-    getAllUsers: function(req, res) {
+    getAll: function(req, res) {
       User.find({}, function(err, users) {
         if (err) {
           res.send(err);
@@ -107,7 +107,7 @@
     },
 
     // get user by id
-    getUser: function(req, res) {
+    get: function(req, res) {
       var id = req.params.id;
       User.find({
         _id: id
@@ -147,7 +147,7 @@
     },
 
     // update user by id
-    updateUser: function(req, res) {
+    update: function(req, res) {
       var id = req.params.id;
       // update function
       var updateMe = function(id) {
@@ -200,7 +200,7 @@
     },
 
     // delete user by id
-    deleteUser: function(req, res) {
+    delete: function(req, res) {
       // delete function
       var deleteMe = function(id) {
         User.findOneAndRemove({

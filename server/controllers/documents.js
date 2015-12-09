@@ -7,7 +7,7 @@
 
    module.exports = {
      // get document by id
-     getDocument: function(req, res) {
+     get: function(req, res) {
        var id = req.params.id;
        Document.find({
          _id: id
@@ -21,7 +21,7 @@
      },
 
      // to get the mongo cluster of all the documents stored
-     getAllDocuments: function(req, res) {
+     getAll: function(req, res) {
        Document.find({}, function(err, documents) {
          if (err) {
            res.send(err);
@@ -31,7 +31,7 @@
        });
      },
 
-     createDocument: function(req, res) {
+     create: function(req, res) {
        var document = new Document({
          ownerId: req.decoded._id,
          title: req.body.title,
@@ -47,7 +47,7 @@
      },
 
      // update document by id
-     updateDocument: function(req, res) {
+     update: function(req, res) {
        var id = req.params.id;
        Document.findById(req.params.id).exec(function(err, document) {
          if (err) {
@@ -95,7 +95,7 @@
      },
 
      // delete document by id
-     deleteDocument: function(req, res) {
+     delete: function(req, res) {
        Document.findById(req.params.id).exec(function(err, document) {
          if (err) {
            res.status(500).send({
