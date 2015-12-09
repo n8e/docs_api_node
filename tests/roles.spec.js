@@ -7,17 +7,13 @@ describe('Roles', function() {
       .get(url + '/api/users/roles')
       .end(function(err, res) {
         // expected responses after seeding
-        if (err) {
-          expect(err.status).not.toEqual(200);
-        } else {
-          expect(res.status).toBe(200);
-          expect(res.body.length).toEqual(2);
-          expect(res.body[0].id).toEqual(1);
-          expect(res.body[0].title).toEqual('Administrator');
-          expect(res.body[1].id).toEqual(2);
-          expect(res.body[1].title).toEqual('User');
-          done();
-        }
+        expect(res.status).toBe(200);
+        expect(res.body.length).toEqual(2);
+        expect(res.body[1].id).toEqual(1);
+        expect(res.body[1].title).toEqual('Administrator');
+        expect(res.body[0].id).toEqual(2);
+        expect(res.body[0].title).toEqual('User');
+        done();
       });
   });
 
@@ -29,14 +25,10 @@ describe('Roles', function() {
         title: 'Administrator'
       })
       .end(function(err, res) {
-        if (err) {
-          expect(err.status).not.toEqual(200);
-        } else {
-          expect(res.status).toEqual(409);
-          expect(res.body.code).toEqual(11000);
-          expect(res.body.index).toEqual(0);
-          expect(res.body.errmsg).toContain('E11000 duplicate key error index');
-        }
+        expect(res.status).toEqual(409);
+        expect(res.body.code).toEqual(11000);
+        expect(res.body.index).toEqual(0);
+        expect(res.body.errmsg).toContain('E11000 duplicate key error index');
         done();
       });
   });

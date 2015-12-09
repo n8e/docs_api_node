@@ -77,17 +77,13 @@ describe('Document tests requiring authentication', function() {
       .set('x-access-token', authToken)
       .send(document2)
       .end(function(err, res) {
-        if (err) {
-          expect(err.status).not.toEqual(200);
-        } else {
-          doc2id = res.body._id;
-          expect(res.status).toEqual(200);
-          expect(typeof res.body).toBe('object');
-          expect(res.body._id).toBeDefined();
-          expect(res.body.title).toEqual(document2.title);
-          expect(res.body.content).toBe(document2.content);
-          done();
-        }
+        doc2id = res.body._id;
+        expect(res.status).toEqual(200);
+        expect(typeof res.body).toBe('object');
+        expect(res.body._id).toBeDefined();
+        expect(res.body.title).toEqual(document2.title);
+        expect(res.body.content).toBe(document2.content);
+        done();
       });
   });
 
@@ -127,15 +123,11 @@ describe('Document tests requiring authentication', function() {
         .get(url + '/api/documents/date')
         .set('x-access-token', authToken)
         .end(function(err, res) {
-          if (err) {
-            expect(err.status).not.toEqual(200);
-          } else {
-            expect(res.status).toEqual(200);
-            expect(res.body.length).toBeGreaterThan(1);
-            expect(res.body[0].dateCreated).toContain(moment(new Date()).format('YYYY-MM-DD'));
-            expect(true).toBe(true);
-            done();
-          }
+          expect(res.status).toEqual(200);
+          expect(res.body.length).toBeGreaterThan(1);
+          expect(res.body[0].dateCreated).toContain(moment(new Date()).format('YYYY-MM-DD'));
+          expect(true).toBe(true);
+          done();
         });
     });
 });
@@ -173,18 +165,14 @@ describe('Administrator Documents', function() {
       .set('x-access-token', authToken)
       .send(document3)
       .end(function(err, res) {
-        if (err) {
-          expect(err.status).not.toEqual(200);
-        } else {
-          doc3id = res.body._id;
-          expect(res.status).toEqual(200);
-          expect('Content-Type', 'json', done);
-          expect(typeof res.body).toBe('object');
-          expect(res.body._id).toBeDefined();
-          expect(res.body.title).toEqual(document3.title);
-          expect(res.body.content).toBe(document3.content);
-          done();
-        }
+        doc3id = res.body._id;
+        expect(res.status).toEqual(200);
+        expect('Content-Type', 'json', done);
+        expect(typeof res.body).toBe('object');
+        expect(res.body._id).toBeDefined();
+        expect(res.body.title).toEqual(document3.title);
+        expect(res.body.content).toBe(document3.content);
+        done();
       });
   });
 
@@ -194,17 +182,13 @@ describe('Administrator Documents', function() {
       .set('x-access-token', authToken)
       .send(document4)
       .end(function(err, res) {
-        if (err) {
-          expect(err.status).not.toEqual(200);
-        } else {
-          doc4id = res.body._id;
-          expect(res.status).toEqual(200);
-          expect(typeof res.body).toBe('object');
-          expect(res.body._id).toBeDefined();
-          expect(res.body.title).toEqual(document4.title);
-          expect(res.body.content).toBe(document4.content);
-          done();
-        }
+        doc4id = res.body._id;
+        expect(res.status).toEqual(200);
+        expect(typeof res.body).toBe('object');
+        expect(res.body._id).toBeDefined();
+        expect(res.body.title).toEqual(document4.title);
+        expect(res.body.content).toBe(document4.content);
+        done();
       });
   });
 
@@ -216,16 +200,12 @@ describe('Administrator Documents', function() {
         .get(url + '/api/documents/admin')
         .set('x-access-token', authToken)
         .end(function(err, res) {
-          if (err) {
-            expect(err.status).not.toEqual(200);
-          } else {
-            var lastItem = res.body[res.body.length - 1];
-            var firstItem = res.body[res.body.length - 2];
-            expect(res.status).toEqual(200);
-            expect(lastItem.dateCreated).toEqual(firstItem.dateCreated);
-            expect(true).toBe(true);
-            done();
-          }
+          var lastItem = res.body[res.body.length - 1];
+          var firstItem = res.body[res.body.length - 2];
+          expect(res.status).toEqual(200);
+          expect(lastItem.dateCreated).toEqual(firstItem.dateCreated);
+          expect(true).toBe(true);
+          done();
         });
     });
 
@@ -240,14 +220,10 @@ describe('Administrator Documents', function() {
           content: 'A character in LOTR.'
         })
         .end(function(err, res) {
-          if (err) {
-            expect(err.status).not.toEqual(200);
-          } else {
-            expect(res.status).toBe(200);
-            expect(typeof res.body).toEqual('object');
-            expect(res.body.success).toBe(true);
-            expect(res.body.message).toBe('Successfully updated Document!');
-          }
+          expect(res.status).toBe(200);
+          expect(typeof res.body).toEqual('object');
+          expect(res.body.success).toBe(true);
+          expect(res.body.message).toBe('Successfully updated Document!');
           done();
         });
     });
@@ -259,14 +235,10 @@ describe('Administrator Documents', function() {
         .del(url + '/api/documents/' + doc2id)
         .set('x-access-token', authToken)
         .end(function(err, res) {
-          if (err) {
-            expect(err.status).not.toEqual(200);
-          } else {
-            expect(res.status).toEqual(200);
-            expect(typeof res.body).toBe('object');
-            expect(res.body.message.title).toBe(document2.title);
-            expect(res.body.message.content).toBe(document2.content);
-          }
+          expect(res.status).toEqual(200);
+          expect(typeof res.body).toBe('object');
+          expect(res.body.message.title).toBe(document2.title);
+          expect(res.body.message.content).toBe(document2.content);
           done();
         });
     });
@@ -310,13 +282,9 @@ describe('Document tests requiring authentication', function() {
           content: 'A character in LOTR.'
         })
         .end(function(err, res) {
-          if (err) {
-            expect(err.status).toEqual(403);
-          } else {
-            expect(res.status).toBe(403);
-            expect(typeof res.body).toBe('object');
-            expect(res.body.message).toBe('Forbidden to update this document.');
-          }
+          expect(res.status).toBe(403);
+          expect(typeof res.body).toBe('object');
+          expect(res.body.message).toBe('Forbidden to update this document.');
           done();
         });
     });
@@ -328,13 +296,9 @@ describe('Document tests requiring authentication', function() {
         .del(url + '/api/documents/' + doc1id)
         .set('x-access-token', authToken)
         .end(function(err, res) {
-          if (err) {
-            expect(err.status).toEqual(403);
-          } else {
-            expect(res.status).toEqual(403);
-            expect(typeof res.body).toBe('object');
-            expect(res.body.message).toBe('Forbidden to delete this document.');
-          }
+          expect(res.status).toEqual(403);
+          expect(typeof res.body).toBe('object');
+          expect(res.body.message).toBe('Forbidden to delete this document.');
           done();
         });
     });
