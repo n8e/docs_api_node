@@ -87,7 +87,7 @@ describe('Users', function() {
       });
   });
 
-  it('validates that a user can be logged in', function(done) {
+  it('validates that a valid user can be logged in', function(done) {
     request
       .post(url + '/api/users/login')
       .send({
@@ -104,6 +104,24 @@ describe('Users', function() {
           expect(res.body.token).toBeDefined();
           done();
         }
+      });
+  });
+
+  it('validates that an invalid user cannot be logged in', function(done) {
+    request
+      .post(url + '/api/users/login')
+      .send({
+        username: 'rupertm',
+        password: '67891'
+      })
+      .end(function(err, res) {
+        if (err) {
+          expect(err.status).not.toEqual(200);
+        } else {
+          expect(res.status).toEqual(500);
+          expect(res.body.message).toBe('User doesnt exist');
+        }
+        done();
       });
   });
 });

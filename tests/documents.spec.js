@@ -228,6 +228,48 @@ describe('Administrator Documents', function() {
           }
         });
     });
+
+  it('validates that any users document can be updated by an ' +
+    'Administrator (PUT /api/documents)/:id',
+    function(done) {
+      request
+        .put(url + '/api/documents/' + doc1id)
+        .set('x-access-token', authToken)
+        .send({
+          title: 'Frodo',
+          content: 'A character in LOTR.'
+        })
+        .end(function(err, res) {
+          if (err) {
+            expect(err.status).not.toEqual(200);
+          } else {
+            expect(res.status).toBe(200);
+            expect(typeof res.body).toEqual('object');
+            expect(res.body.success).toBe(true);
+            expect(res.body.message).toBe('Successfully updated Document!');
+          }
+          done();
+        });
+    });
+
+  it('validates that any users document can be deleted by an ' +
+    'Administrator (DELETE /api/documents)/:id',
+    function(done) {
+      request
+        .del(url + '/api/documents/' + doc2id)
+        .set('x-access-token', authToken)
+        .end(function(err, res) {
+          if (err) {
+            expect(err.status).not.toEqual(200);
+          } else {
+            expect(res.status).toEqual(200);
+            expect(typeof res.body).toBe('object');
+            expect(res.body.message.title).toBe(document2.title);
+            expect(res.body.message.content).toBe(document2.content);
+          }
+          done();
+        });
+    });
 });
 // tests for manipulating documents access
 describe('Document tests requiring authentication', function() {
@@ -283,7 +325,7 @@ describe('Document tests requiring authentication', function() {
     'Administrator (DELETE /api/documents)/:id',
     function(done) {
       request
-        .del(url + '/api/documents/' + doc2id)
+        .del(url + '/api/documents/' + doc1id)
         .set('x-access-token', authToken)
         .end(function(err, res) {
           if (err) {

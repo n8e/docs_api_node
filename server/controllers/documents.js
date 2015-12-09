@@ -56,7 +56,7 @@
            });
          } else {
            if (!document) {
-             res.send({
+             res.status(404).send({
                message: 'No document found.'
              });
            } else {
@@ -103,7 +103,7 @@
            });
          } else {
            if (!document) {
-             res.send({
+             res.status(404).send({
                message: 'No document found.'
              });
            } else {
@@ -116,12 +116,12 @@
                // delete or update
                Document.findOneAndRemove({
                  _id: req.params.id
-               }).exec(function(err, documents) {
+               }).exec(function(err, document) {
                  if (err) {
                    return err;
                  } else {
                    res.status(200).json({
-                     message: documents
+                     message: document
                    });
                  }
                });
