@@ -2,7 +2,8 @@ var url = 'http://localhost:3000',
   request = require('superagent');
 
 describe('Users', function() {
-  it('should show that a new user is created (POST /api/users)', function(done) {
+  it('should show that a new user is created ' + 
+    '(POST /api/users)', function(done) {
     request
       .post(url + '/api/users')
       .send({
@@ -22,7 +23,8 @@ describe('Users', function() {
       });
   });
 
-  it('validates that the new user created is unique (POST /api/users)', function(done) {
+  it('validates that the new user created is unique ' + 
+    '(POST /api/users)', function(done) {
     request
       .post(url + '/api/users')
       .send({
@@ -53,13 +55,15 @@ describe('Users', function() {
           expect(res.status).toEqual(200);
           expect(res.body.length).toBeGreaterThan(0);
           expect(res.body[res.body.length - 1].username).toEqual('batman');
-          expect(res.body[res.body.length - 1].email).toEqual('batman@cave.com');
+          expect(res.body[res.body.length - 1].email)
+          .toEqual('batman@cave.com');
           expect(typeof res.body).toBe('object');
           done();
         });
     });
 
-  it('validates that the new user created has a defined role, has a first name and a last name', function(done) {
+  it('validates that the new user created has a defined role, ' + 
+    'has a first name and a last name', function(done) {
     request
       .get(url + '/api/users')
       .end(function(err, res) {

@@ -60,7 +60,8 @@
                message: 'No document found.'
              });
            } else {
-             if (req.decoded._id !== document.ownerId && req.decoded.role === 'User') {
+             if (req.decoded._id !== document.ownerId && 
+              req.decoded.role === 'User') {
                // send 403 status and forbidden message
                res.status(403).send({
                  message: 'Forbidden to update this document.'
@@ -107,7 +108,8 @@
                message: 'No document found.'
              });
            } else {
-             if (req.decoded._id !== document.ownerId && req.decoded.role === 'User') {
+             if (req.decoded._id !== document.ownerId && 
+              req.decoded.role === 'User') {
                // send 403 status and forbidden message
                res.status(403).send({
                  message: 'Forbidden to delete this document.'
@@ -159,7 +161,7 @@
          });
      },
 
-     // to get the mongo cluster of all the documents filtered by 'Administrator' role
+     // cluster of all the documents filtered by 'Administrator' role
      getAllDocumentsByRoleAdministrator: function(req, res) {
        Document.find({})
          .populate('ownerId')
