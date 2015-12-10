@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "pretest": "node server.js &\nnode ./seeders/index.js",
-    "test": "jasmine-node tests/ --verbose"
+    "test": "jasmine-node tests/ --verbose",
+    "posttest": "pkill node"
   },
   "repository": {
     "type": "git",
