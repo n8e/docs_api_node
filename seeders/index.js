@@ -124,7 +124,7 @@ function adminSeed() {
   });
 }
 
-(function seeder() {
+function seeder(callback) {
   mongoose.connect(config.database, function(err) {
     if (err) {
       console.log(err);
@@ -137,13 +137,16 @@ function adminSeed() {
           console.log('Dropped database before seeding');
           rolesAdminSeed();
           rolesUserSeed();
-          userOneSeed();
-          userTwoSeed();
-          adminSeed();
+          callback();
         }
       });
       exit();
     }
   });
-
-})();
+}
+seeder(function() {
+    userOneSeed();
+    userTwoSeed();
+    adminSeed();
+  }
+);
