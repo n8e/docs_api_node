@@ -14,8 +14,8 @@ var document1 = {
   doc1id,
   document2 = {
     title: 'Cone',
-    content: 'Has a circular base and a pointed top. It is a third of a ' + 
-    'cylinder'
+    content: 'Has a circular base and a pointed top. It is a third of a ' +
+      'cylinder'
   },
   doc2id,
   document3 = {
@@ -30,18 +30,19 @@ var document1 = {
   doc4id;
 
 describe('Document', function() {
-  it('validates that one has to be authenticated to access documents ' + 
-    '(GET /api/documents)', function(done) {
-    request
-      .get(url + '/api/documents')
-      .end(function(err, res) {
-        expect(typeof res.body).toBe('object');
-        expect(res.status).toEqual(403);
-        expect(res.body.success).toEqual(false);
-        expect(res.body.message).toBe('No token provided!');
-        done();
-      });
-  });
+  it('validates that one has to be authenticated to access documents ' +
+    '(GET /api/documents)',
+    function(done) {
+      request
+        .get(url + '/api/documents')
+        .end(function(err, res) {
+          expect(typeof res.body).toBe('object');
+          expect(res.status).toEqual(403);
+          expect(res.body.success).toEqual(false);
+          expect(res.body.message).toBe('No token provided!');
+          done();
+        });
+    });
 });
 
 describe('Document tests requiring authentication', function() {
@@ -57,58 +58,61 @@ describe('Document tests requiring authentication', function() {
       });
   });
 
-  it('validates that a document is created by a user logged in ' + 
-    '(POST /api/documents)', function(done) {
-    request
-      .post(url + '/api/documents')
-      .set('x-access-token', authToken)
-      .send(document1)
-      .end(function(err, res) {
-        doc1id = res.body._id;
-        expect(res.status).toEqual(200);
-        expect(typeof res.body).toBe('object');
-        expect(res.body._id).toBeDefined();
-        expect(res.body.title).toEqual(document1.title);
-        expect(res.body.content).toBe(document1.content);
-        done();
-      });
-  });
+  it('validates that a document is created by a user logged in ' +
+    '(POST /api/documents)',
+    function(done) {
+      request
+        .post(url + '/api/documents')
+        .set('x-access-token', authToken)
+        .send(document1)
+        .end(function(err, res) {
+          doc1id = res.body._id;
+          expect(res.status).toEqual(200);
+          expect(typeof res.body).toBe('object');
+          expect(res.body._id).toBeDefined();
+          expect(res.body.title).toEqual(document1.title);
+          expect(res.body.content).toBe(document1.content);
+          done();
+        });
+    });
 
-  it('validates that a document is created by a user logged in ' + 
-    '(POST /api/documents)', function(done) {
-    request
-      .post(url + '/api/documents')
-      .set('x-access-token', authToken)
-      .send(document2)
-      .end(function(err, res) {
-        doc2id = res.body._id;
-        expect(res.status).toEqual(200);
-        expect(typeof res.body).toBe('object');
-        expect(res.body._id).toBeDefined();
-        expect(res.body.title).toEqual(document2.title);
-        expect(res.body.content).toBe(document2.content);
-        done();
-      });
-  });
+  it('validates that a document is created by a user logged in ' +
+    '(POST /api/documents)',
+    function(done) {
+      request
+        .post(url + '/api/documents')
+        .set('x-access-token', authToken)
+        .send(document2)
+        .end(function(err, res) {
+          doc2id = res.body._id;
+          expect(res.status).toEqual(200);
+          expect(typeof res.body).toBe('object');
+          expect(res.body._id).toBeDefined();
+          expect(res.body.title).toEqual(document2.title);
+          expect(res.body.content).toBe(document2.content);
+          done();
+        });
+    });
 
-  it('validates that one has to be authenticated to access documents ' + 
-    '(GET /api/documents)', function(done) {
-    request
-      .get(url + '/api/documents')
-      .set('x-access-token', authToken)
-      .end(function(err, res) {
-        expect(res.status).toEqual(200);
-        expect(typeof res.body).toBe('object');
-        expect(res.body.length).toBeGreaterThan(0);
-        expect(res.body[res.body.length - 1].title).toEqual(document2.title);
-        expect(res.body[res.body.length - 1].content).toEqual
-        (document2.content);
-        done();
-      });
-  });
+  it('validates that one has to be authenticated to access documents ' +
+    '(GET /api/documents)',
+    function(done) {
+      request
+        .get(url + '/api/documents')
+        .set('x-access-token', authToken)
+        .end(function(err, res) {
+          expect(res.status).toEqual(200);
+          expect(typeof res.body).toBe('object');
+          expect(res.body.length).toBeGreaterThan(0);
+          expect(res.body[res.body.length - 1].title).toEqual(document2.title);
+          expect(res.body[res.body.length - 1].content).toEqual(document2
+            .content);
+          done();
+        });
+    });
 
-  it('validates that all documents, limited by a specified number ' + 
-    'and ordered by published date, that can be accessed by a ' + 
+  it('validates that all documents, limited by a specified number ' +
+    'and ordered by published date, that can be accessed by a ' +
     'role USER, are returned when getAllDocumentsByRoleUser is called',
     function(done) {
       request
@@ -124,7 +128,7 @@ describe('Document tests requiring authentication', function() {
     });
 
   it('validates that all documents, limited by a specified number, that were' +
-    ' published on a certain date, are returned when getAllDocumentsByDate ' + 
+    ' published on a certain date, are returned when getAllDocumentsByDate ' +
     'is called',
     function(done) {
       request
@@ -168,44 +172,46 @@ describe('Administrator Documents', function() {
       });
   });
 
-  it('validates that a document is created by a admin logged in ' + 
-    '(POST /api/documents)', function(done) {
-    request
-      .post(url + '/api/documents')
-      .set('x-access-token', authToken)
-      .send(document3)
-      .end(function(err, res) {
-        doc3id = res.body._id;
-        expect(res.status).toEqual(200);
-        expect('Content-Type', 'json', done);
-        expect(typeof res.body).toBe('object');
-        expect(res.body._id).toBeDefined();
-        expect(res.body.title).toEqual(document3.title);
-        expect(res.body.content).toBe(document3.content);
-        done();
-      });
-  });
+  it('validates that a document is created by a admin logged in ' +
+    '(POST /api/documents)',
+    function(done) {
+      request
+        .post(url + '/api/documents')
+        .set('x-access-token', authToken)
+        .send(document3)
+        .end(function(err, res) {
+          doc3id = res.body._id;
+          expect(res.status).toEqual(200);
+          expect('Content-Type', 'json', done);
+          expect(typeof res.body).toBe('object');
+          expect(res.body._id).toBeDefined();
+          expect(res.body.title).toEqual(document3.title);
+          expect(res.body.content).toBe(document3.content);
+          done();
+        });
+    });
 
-  it('validates that a document is created by a admin logged in ' + 
-    '(POST /api/documents)', function(done) {
-    request
-      .post(url + '/api/documents')
-      .set('x-access-token', authToken)
-      .send(document4)
-      .end(function(err, res) {
-        doc4id = res.body._id;
-        expect(res.status).toEqual(200);
-        expect(typeof res.body).toBe('object');
-        expect(res.body._id).toBeDefined();
-        expect(res.body.title).toEqual(document4.title);
-        expect(res.body.content).toBe(document4.content);
-        done();
-      });
-  });
+  it('validates that a document is created by a admin logged in ' +
+    '(POST /api/documents)',
+    function(done) {
+      request
+        .post(url + '/api/documents')
+        .set('x-access-token', authToken)
+        .send(document4)
+        .end(function(err, res) {
+          doc4id = res.body._id;
+          expect(res.status).toEqual(200);
+          expect(typeof res.body).toBe('object');
+          expect(res.body._id).toBeDefined();
+          expect(res.body.title).toEqual(document4.title);
+          expect(res.body.content).toBe(document4.content);
+          done();
+        });
+    });
 
-  it('validates that all documents, limited by a specified number ' + 
-    'and ordered by published date, that can be accessed by a role ' + 
-    'ADMINISTRATOR, are returned when ' + 
+  it('validates that all documents, limited by a specified number ' +
+    'and ordered by published date, that can be accessed by a role ' +
+    'ADMINISTRATOR, are returned when ' +
     'getAllDocumentsByRoleAdministrator is called',
     function(done) {
       request
@@ -284,7 +290,7 @@ describe('Document tests requiring authentication', function() {
   });
 
   it('validates that a document can only be updated by the creator or an ' +
-    'Administrator (PUT /api/documents)/:id',
+    'Administrator (PUT /api/documents/:id)',
     function(done) {
       request
         .put(url + '/api/documents/' + doc1id)
@@ -302,7 +308,7 @@ describe('Document tests requiring authentication', function() {
     });
 
   it('validates that a document can only be deleted by the creator or an ' +
-    'Administrator (DELETE /api/documents)/:id',
+    'Administrator (DELETE /api/documents/:id)',
     function(done) {
       request
         .del(url + '/api/documents/' + doc1id)

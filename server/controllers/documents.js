@@ -60,6 +60,7 @@
                message: 'No document found.'
              });
            } else {
+            console.log('LOGGED ID ' + req.decoded._id + ' LOGGED ROLE ' + req.decoded.role + ' OWNER ID ' + document.ownerId);
              if (req.decoded._id !== document.ownerId && 
               req.decoded.role === 'User') {
                // send 403 status and forbidden message

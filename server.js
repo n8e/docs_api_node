@@ -4,7 +4,6 @@ var config = require('./server/config/config');
 var express = require('express');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
-var seed = require('./seeders/index');
 var app = express();
 
 var http = require('http').Server(app);
@@ -16,19 +15,10 @@ mongoose.connect(config.database, function(err) {
   if (err) {
     console.log(err);
   } else {
-    mongoose.connection.db.dropDatabase(function(err) {
-      if (err) {
-        return err;
-      } else {
-        console.log('Dropped database');
-        (function() {
-          seed.seeder();
-        })();
-      }
-    });
-    console.log('Connected to the database.');
+    console.log('Server connected to the database.');
   }
 });
+
 
 app.use(bodyParser.urlencoded({
   extended: true

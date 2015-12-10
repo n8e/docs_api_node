@@ -42,7 +42,7 @@
         // save the user object
         user.save(function(err) {
           if (err) {
-            res.send(err);
+            res.status(403).send(err);
             return;
           }
           res.json({

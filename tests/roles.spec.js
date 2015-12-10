@@ -9,10 +9,10 @@ describe('Roles', function() {
         // expected responses after seeding
         expect(res.status).toBe(200);
         expect(res.body.length).toEqual(2);
-        expect(res.body[1].id).toEqual(1);
-        expect(res.body[1].title).toEqual('Administrator');
-        expect(res.body[0].id).toEqual(2);
-        expect(res.body[0].title).toEqual('User');
+        expect(res.body[0].id).toEqual(1);
+        expect(res.body[0].title).toEqual('Administrator');
+        expect(res.body[1].id).toEqual(2);
+        expect(res.body[1].title).toEqual('User');
         done();
       });
   });
