@@ -1,14 +1,11 @@
 var DocCtrl = require('../controllers/documents'),
   UserCtrl = require('../controllers/users'),
-  RolesCtrl = require('../controllers/roles'),
   auth = require('../controllers/auth');
 
-module.exports = function(app, express) {
+module.exports = function (app, express) {
   var api = express.Router();
   api.post('/users', UserCtrl.create);
   api.get('/users', UserCtrl.getAll);
-  api.get('/users/roles', RolesCtrl.get);
-  api.post('/users/roles', RolesCtrl.create);
   api.post('/users/login', UserCtrl.login);
   // middleware
   api.use(auth.authenticate);
@@ -26,7 +23,7 @@ module.exports = function(app, express) {
   api.delete('/users/:id', UserCtrl.delete);
   api.get('/documents/:id', DocCtrl.get);
   api.delete('/documents/:id', DocCtrl.delete);
-  api.get('/me', function(req, res) {
+  api.get('/me', function (req, res) {
     res.send(req.decoded);
   });
   return api;

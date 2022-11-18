@@ -1,29 +1,27 @@
 // require needed modules
-var mongoose = require('mongoose'),
+const mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 // create a schema
-var DocumentSchema = new Schema({
+const DocumentSchema = new Schema({
   ownerId: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
   title: {
     type: String,
-    unique: true
   },
   content: {
     type: String,
-    unique: true
   },
   dateCreated: {
     type: Date,
-    default: Date.now()
+    default: Date.now(),
   },
   lastModified: {
     type: Date,
-    default: Date.now()
-  }
+    default: Date.now(),
+  },
 });
 
 // make the model available to our users in our Node applications

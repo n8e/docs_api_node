@@ -1,51 +1,43 @@
 // require the modules for database and password
-var mongoose = require('mongoose'),
+const mongoose = require('mongoose'),
   Schema = mongoose.Schema,
-  bcrypt = require('bcrypt-nodejs');
+  bcrypt = require('bcrypt');
 
 // create a schema
-var UserSchema = new Schema({
+let UserSchema = new Schema({
   username: {
     type: String,
+    index: true,
+    unique: true,
     required: true,
-    index: {
-      unique: true
-    }
+    dropDups: true,
   },
-  name: {
-    first: String,
-    last: String
+  firstname: String,
+  lastname: String,
+  email: {
+    type: String,
+    index: true,
+    unique: true,
+    required: true,
+    dropDups: true,
   },
-  email: String,
   password: {
     type: String,
-    required: true
+    required: true,
   },
   role: {
     type: String,
-    required: true
-  }
+    enum: ['User', 'Administrator'],
+    required: true,
+  },
 });
 
-UserSchema.pre('save', function(next) {
-  var user = this;
+UserSchema.statics.hashPassword = (password) => {
+  return bcrypt.hashSync(password, 10);
+};
 
-  if (!user.isModified('password')) {
-    return next();
-  }
-
-  bcrypt.hash(user.password, null, null, function(err, hash) {
-    if (err) {
-      return next(err);
-    }
-    user.password = hash;
-    next();
-  });
-});
-
-UserSchema.methods.comparePassword = function(password) {
-  var user = this;
-  return bcrypt.compareSync(password, user.password);
+UserSchema.methods.comparePassword = function (password) {
+  return bcrypt.compareSync(password, this.password);
 };
 
 // make the model available to our users in our Node applications
