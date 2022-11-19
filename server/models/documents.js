@@ -1,6 +1,7 @@
 // require needed modules
-const mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+
+const { Schema } = mongoose;
 
 // create a schema
 const DocumentSchema = new Schema({

@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+
 const app = express();
 
 const http = require('http').Server(app);
@@ -27,19 +28,20 @@ app.use(bodyParser.json());
 
 app.use(morgan('dev'));
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(`${__dirname}/public`));
 
-var api = require('./server/routes/index')(app, express);
+const api = require('./server/routes/index')(app, express);
+
 app.use('/api', api);
 
-app.get('*', function (req, res) {
+app.get('*', (req, res) => {
   res.send('System Under Construction...');
 });
 
-http.listen(config.port, function (err) {
+http.listen(config.port, (err) => {
   if (err) {
     console.log(err);
   } else {
-    console.log('Listening on port: ' + config.port);
+    console.log(`Listening on port: ${config.port}`);
   }
 });

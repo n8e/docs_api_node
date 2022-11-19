@@ -10,4 +10,9 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {},
+  globals: {
+    describe: true,
+    it: true,
+    beforeEach: true,
+  },
 };

@@ -1,11 +1,12 @@
-const expect = require('chai').expect;
+const { expect } = require('chai');
 const request = require('superagent');
+
 const url = 'http://localhost:3000';
 
 describe('Users', () => {
   it('should show that a new user is created (POST /api/users)', (done) => {
     request
-      .post(url + '/api/users')
+      .post(`${url}/api/users`)
       .set('Content-Type', 'application/json')
       .send({
         username: 'batman',
@@ -26,7 +27,7 @@ describe('Users', () => {
 
   it('validates that only valid user roles can be assigned to a user', (done) => {
     request
-      .post(url + '/api/users')
+      .post(`${url}/api/users`)
       .set('Content-Type', 'application/json')
       .send({
         username: 'batman',
@@ -48,7 +49,7 @@ describe('Users', () => {
 
   it('validates that all users are returned when getAllUsers function in the controller is called (GET /api/users)', (done) => {
     request
-      .get(url + '/api/users')
+      .get(`${url}/api/users`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -61,7 +62,7 @@ describe('Users', () => {
   });
 
   it('validates that the new user created has a defined role, has a first name and a last name', (done) => {
-    request.get(url + '/api/users').end((err, res) => {
+    request.get(`${url}/api/users`).end((err, res) => {
       expect(res.status).to.equal(200);
       expect(res.body[res.body.length - 1].role).to.equal('User');
       expect(res.body[res.body.length - 1].firstname).to.equal('Bruce');
@@ -72,7 +73,7 @@ describe('Users', () => {
 
   it('validates that a valid user can be logged in', (done) => {
     request
-      .post(url + '/api/users/login')
+      .post(`${url}/api/users/login`)
       .send({ username: 'smalik', password: '12345' })
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -85,7 +86,7 @@ describe('Users', () => {
 
   it('validates that an invalid user cannot be logged in', (done) => {
     request
-      .post(url + '/api/users/login')
+      .post(`${url}/api/users/login`)
       .send({ username: 'rupertm', password: '67891' })
       .end((err, res) => {
         expect(res.status).to.equal(500);

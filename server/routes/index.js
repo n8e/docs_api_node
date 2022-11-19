@@ -1,9 +1,9 @@
-var DocCtrl = require('../controllers/documents'),
-  UserCtrl = require('../controllers/users'),
-  auth = require('../controllers/auth');
+const DocCtrl = require('../controllers/documents');
+const UserCtrl = require('../controllers/users');
+const auth = require('../controllers/auth');
 
 module.exports = function (app, express) {
-  var api = express.Router();
+  const api = express.Router();
   api.post('/users', UserCtrl.create);
   api.get('/users', UserCtrl.getAll);
   api.post('/users/login', UserCtrl.login);
@@ -23,7 +23,7 @@ module.exports = function (app, express) {
   api.delete('/users/:id', UserCtrl.delete);
   api.get('/documents/:id', DocCtrl.get);
   api.delete('/documents/:id', DocCtrl.delete);
-  api.get('/me', function (req, res) {
+  api.get('/me', (req, res) => {
     res.send(req.decoded);
   });
   return api;

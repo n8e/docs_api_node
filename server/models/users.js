@@ -1,10 +1,11 @@
 // require the modules for database and password
-const mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-  bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+
+const { Schema } = mongoose;
 
 // create a schema
-let UserSchema = new Schema({
+const UserSchema = new Schema({
   username: {
     type: String,
     index: true,
@@ -32,9 +33,7 @@ let UserSchema = new Schema({
   },
 });
 
-UserSchema.statics.hashPassword = (password) => {
-  return bcrypt.hashSync(password, 10);
-};
+UserSchema.statics.hashPassword = (password) => bcrypt.hashSync(password, 10);
 
 UserSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.password);
