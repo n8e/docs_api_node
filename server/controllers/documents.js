@@ -79,15 +79,12 @@ const User = require('../models/users');
               title: req.body.title,
               content: req.body.content,
             },
-            {
-              title: req.body.title,
-              content: req.body.content,
-            },
-            (err, documents) => {
-              if (err) {
-                res.send(err);
+            (updateError, documents) => {
+              if (updateError) {
+                res.send(updateError);
               } else {
                 res.json({
+                  documents,
                   success: true,
                   message: 'Successfully updated Document!',
                 });
@@ -121,12 +118,12 @@ const User = require('../models/users');
           // delete or update
           Document.findOneAndRemove({
             _id: req.params.id,
-          }).exec((err, document) => {
-            if (err) {
-              return err;
+          }).exec((deleteError, deletedDocument) => {
+            if (deleteError) {
+              return res.send(deleteError);
             }
-            res.status(200).json({
-              message: document,
+            return res.status(200).json({
+              message: deletedDocument,
             });
           });
         }

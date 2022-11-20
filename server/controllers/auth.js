@@ -1,4 +1,4 @@
-const jsonwebtoken = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 
 const { secretKey } = config;
@@ -11,7 +11,7 @@ const { secretKey } = config;
         req.body.token || req.params.token || req.headers['x-access-token'];
       // check if token exists
       if (token) {
-        jsonwebtoken.verify(token, secretKey, (err, decoded) => {
+        jwt.verify(token, secretKey, (err, decoded) => {
           if (err) {
             res.status(403).send({
               success: false,

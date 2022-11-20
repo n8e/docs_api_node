@@ -12,8 +12,7 @@ require('dotenv').config();
 
 const config = require('./server/config/config');
 
-// connect to Mongo when the app initializes and
-// drop the db before seeding
+// connect to Mongo when the app initializes
 mongoose
   .connect(config.database)
   .then(() => console.info('Server connected to the database.'))
