@@ -2,8 +2,9 @@ const DocCtrl = require('../controllers/documents');
 const UserCtrl = require('../controllers/users');
 const auth = require('../controllers/auth');
 
-module.exports = function (app, express) {
+module.exports = (app, express) => {
   const api = express.Router();
+
   api.post('/users', UserCtrl.create);
   api.get('/users', UserCtrl.getAll);
   api.post('/users/login', UserCtrl.login);
@@ -26,5 +27,6 @@ module.exports = function (app, express) {
   api.get('/me', (req, res) => {
     res.send(req.decoded);
   });
+
   return api;
 };

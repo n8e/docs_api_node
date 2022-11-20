@@ -1,4 +1,5 @@
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+/* eslint no-unused-expressions: "off" */
 
 const { expect } = require('chai');
 const request = require('superagent');
@@ -69,7 +70,7 @@ describe('Document tests requiring authentication', () => {
 
         expect(res.status).to.equal(200);
         expect(res.body).to.be.an('object');
-        expect(res.body._id).not.to.be.undefined;
+        expect(res.body._id).to.exist;
         expect(res.body.title).to.equal(sampleDocuments[0].title);
         expect(res.body.content).to.equal(sampleDocuments[0].content);
         done();
@@ -87,7 +88,7 @@ describe('Document tests requiring authentication', () => {
 
         expect(res.status).to.equal(200);
         expect(res.body).to.be.an('object');
-        expect(res.body._id).not.to.be.undefined;
+        expect(res.body._id).to.exist;
         expect(res.body.title).to.equal(sampleDocuments[1].title);
         expect(res.body.content).to.equal(sampleDocuments[1].content);
         done();
@@ -179,7 +180,7 @@ describe('Administrator Documents', () => {
         expect(res.status).to.equal(200);
         expect('Content-Type', 'json', done);
         expect(res.body).to.be.an('object');
-        expect(res.body._id).not.to.be.undefined;
+        expect(res.body._id).to.exist;
         expect(res.body.title).to.equal(sampleDocuments[2].title);
         expect(res.body.content).to.equal(sampleDocuments[2].content);
         done();
@@ -195,7 +196,7 @@ describe('Administrator Documents', () => {
       .end((err, res) => {
         expect(res.status).to.equal(200);
         expect(res.body).to.be.an('object');
-        expect(res.body._id).not.to.be.undefined;
+        expect(res.body._id).to.exist;
         expect(res.body.title).to.equal(sampleDocuments[3].title);
         expect(res.body.content).to.equal(sampleDocuments[3].content);
         done();
@@ -229,7 +230,7 @@ describe('Administrator Documents', () => {
       .end((err, res) => {
         expect(res.status).to.equal(200);
         expect(res.body).to.be.an('object');
-        expect(res.body.success).to.be.true;
+        expect(res.body.success).to.equal(true);
         expect(res.body.message).to.equal('Successfully updated Document!');
         done();
       });

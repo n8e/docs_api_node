@@ -1,3 +1,5 @@
+/* eslint no-unused-expressions: "off" */
+
 const { expect } = require('chai');
 const request = require('superagent');
 
@@ -79,7 +81,7 @@ describe('Users', () => {
         expect(res.status).to.equal(200);
         expect(res.body.success).to.equal(true);
         expect(res.body.message).to.equal('Successfully logged in!');
-        expect(res.body.token).not.to.be.undefined;
+        expect(res.body.token).to.exist;
         done();
       });
   });
@@ -90,7 +92,9 @@ describe('Users', () => {
       .send({ username: 'rupertm', password: '67891' })
       .end((err, res) => {
         expect(res.status).to.equal(500);
-        expect(res.body.message).to.equal("User doesn't exist");
+        expect(res.body.message).to.equal(
+          "User with username: rupertm doesn't exist!",
+        );
         done();
       });
   });

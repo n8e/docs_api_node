@@ -1,3 +1,5 @@
+/* eslint no-console: ["error", { allow: ["info", "error"] }] */
+
 // The main application script, ties everything together.
 const bodyParser = require('body-parser');
 const express = require('express');
@@ -39,8 +41,8 @@ app.get('*', (req, res) => {
 
 http.listen(config.port, (err) => {
   if (err) {
-    console.log(err);
+    console.error(err);
   } else {
-    console.log(`Listening on port: ${config.port}`);
+    console.info(`Listening on port: ${config.port}`);
   }
 });
